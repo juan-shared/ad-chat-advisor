@@ -66,7 +66,10 @@ export default {
 			borderRadius: {
 				lg: 'var(--radius)',
 				md: 'calc(var(--radius) - 2px)',
-				sm: 'calc(var(--radius) - 4px)'
+				sm: 'calc(var(--radius) - 4px)',
+				xl: 'var(--radius-card)',
+				'2xl': '2rem',
+				'3xl': '2.5rem'
 			},
 			keyframes: {
 				'accordion-down': {

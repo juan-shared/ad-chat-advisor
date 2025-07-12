@@ -12,7 +12,8 @@ import {
 } from 'lucide-react';
 
 export const RecommendationsBar = () => {
-  const { recommendations, addMessage } = useChatStore();
+  const { currentSession, addMessage } = useChatStore();
+  const recommendations = currentSession?.recommendations || [];
 
   const handleWhyRecommendation = (recommendation: any) => {
     const whyMessage = `Por que você recomenda "${recommendation.title}"?`;

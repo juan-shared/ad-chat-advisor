@@ -20,6 +20,7 @@ export interface ChatSession {
   id: string;
   title: string;
   messages: ChatMessage[];
+  recommendations: Recommendation[];
   createdAt: Date;
   updatedAt: Date;
 }
@@ -27,7 +28,6 @@ export interface ChatSession {
 interface ChatStore {
   currentSession: ChatSession | null;
   sessions: ChatSession[];
-  recommendations: Recommendation[];
   isLoading: boolean;
   isStreaming: boolean;
   error: string | null;
@@ -50,7 +50,6 @@ const generateId = () => Math.random().toString(36).substr(2, 9);
 export const useChatStore = create<ChatStore>((set, get) => ({
   currentSession: null,
   sessions: [],
-  recommendations: [],
   isLoading: false,
   isStreaming: false,
   error: null,
@@ -60,6 +59,7 @@ export const useChatStore = create<ChatStore>((set, get) => ({
       id: generateId(),
       title,
       messages: [],
+      recommendations: [],
       createdAt: new Date(),
       updatedAt: new Date(),
     };
@@ -131,7 +131,24 @@ export const useChatStore = create<ChatStore>((set, get) => ({
     });
   },
 
-  setRecommendations: (recommendations) => set({ recommendations }),
+  setRecommendations: (recommendations) => {
+    set(state => {
+      if (!state.currentSession) return state;
+
+      const updatedSession = {
+        ...state.currentSession,
+        recommendations,
+        updatedAt: new Date(),
+      };
+
+      return {
+        currentSession: updatedSession,
+        sessions: state.sessions.map(s => 
+          s.id === updatedSession.id ? updatedSession : s
+        ),
+      };
+    });
+  },
 
   setLoading: (loading) => set({ isLoading: loading }),
 
@@ -146,6 +163,7 @@ export const useChatStore = create<ChatStore>((set, get) => ({
       const clearedSession = {
         ...state.currentSession,
         messages: [],
+        recommendations: [],
         updatedAt: new Date(),
       };
 

@@ -100,24 +100,44 @@ const Ads = () => {
       </div>
 
       {/* Progress Steps */}
-      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 -mt-8">
-        <Card className="card-elegant">
-          <CardHeader>
-            <div className="flex items-center justify-between mb-4">
-              <div>
-                <CardTitle className="text-2xl">Passo {currentStep} de {steps.length}</CardTitle>
-                <CardDescription>{steps[currentStep - 1]?.description}</CardDescription>
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 -mt-8">
+        <Card className="card-premium overflow-hidden">
+          <CardHeader className="bg-gradient-to-r from-primary/5 to-secondary/5 border-b">
+            <div className="flex items-center justify-between mb-6">
+              <div className="space-y-2">
+                <div className="flex items-center gap-3">
+                  <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-primary to-primary-glow flex items-center justify-center">
+                    <span className="text-primary-foreground font-bold text-lg">{currentStep}</span>
+                  </div>
+                  <div>
+                    <CardTitle className="text-2xl bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
+                      {steps[currentStep - 1]?.title}
+                    </CardTitle>
+                    <CardDescription className="text-base">{steps[currentStep - 1]?.description}</CardDescription>
+                  </div>
+                </div>
               </div>
-              <Badge variant="secondary" className="text-sm">
-                {Math.round(progress)}% completo
-              </Badge>
+              <div className="text-right space-y-2">
+                <Badge variant="secondary" className="text-sm px-4 py-2 rounded-xl">
+                  {Math.round(progress)}% completo
+                </Badge>
+                <div className="text-sm text-muted-foreground">
+                  Passo {currentStep} de {steps.length}
+                </div>
+              </div>
             </div>
-            <Progress value={progress} className="h-2" />
+            <div className="space-y-3">
+              <Progress value={progress} className="h-3 bg-muted rounded-xl" />
+              <div className="flex justify-between text-xs text-muted-foreground">
+                <span>Início</span>
+                <span>Concluído</span>
+              </div>
+            </div>
           </CardHeader>
 
           {/* Steps Indicator */}
-          <CardContent className="pt-0">
-            <div className="flex justify-between mb-8">
+          <CardContent className="pt-8">
+            <div className="grid grid-cols-4 gap-4 mb-12">
               {steps.map((step) => {
                 const Icon = step.icon;
                 const isActive = currentStep === step.id;
@@ -126,33 +146,70 @@ const Ads = () => {
                 return (
                   <div
                     key={step.id}
-                    className={`flex flex-col items-center space-y-2 ${
-                      isActive ? 'text-primary' : isCompleted ? 'text-primary' : 'text-muted-foreground'
+                    className={`relative flex flex-col items-center space-y-4 p-6 rounded-2xl transition-all duration-300 ${
+                      isActive 
+                        ? 'bg-gradient-to-br from-primary/10 to-secondary/5 border-2 border-primary/20 shadow-lg' 
+                        : isCompleted 
+                        ? 'bg-gradient-to-br from-primary/5 to-primary/5 border border-primary/10' 
+                        : 'bg-muted/30 border border-muted'
                     }`}
                   >
+                    {/* Connection Line */}
+                    {step.id < steps.length && (
+                      <div 
+                        className={`absolute top-1/2 -right-2 w-4 h-0.5 hidden lg:block ${
+                          isCompleted ? 'bg-primary' : 'bg-muted'
+                        }`} 
+                      />
+                    )}
+                    
+                    {/* Icon */}
                     <div
-                      className={`h-12 w-12 rounded-full flex items-center justify-center border-2 transition-all ${
+                      className={`w-16 h-16 rounded-2xl flex items-center justify-center transition-all duration-300 ${
                         isActive
-                          ? 'border-primary bg-primary/10'
+                          ? 'bg-gradient-to-br from-primary to-primary-glow text-primary-foreground shadow-lg scale-110'
                           : isCompleted
-                          ? 'border-primary bg-primary text-primary-foreground'
-                          : 'border-muted-foreground/30'
+                          ? 'bg-primary text-primary-foreground shadow-md'
+                          : 'bg-muted text-muted-foreground'
                       }`}
                     >
                       {isCompleted ? (
-                        <CheckCircle className="h-6 w-6" />
+                        <CheckCircle className="h-8 w-8" />
                       ) : (
-                        <Icon className="h-6 w-6" />
+                        <Icon className="h-8 w-8" />
                       )}
                     </div>
-                    <span className="text-sm font-medium hidden md:block">{step.title}</span>
+                    
+                    {/* Text */}
+                    <div className="text-center space-y-1">
+                      <h3 className={`font-semibold text-sm ${
+                        isActive || isCompleted ? 'text-foreground' : 'text-muted-foreground'
+                      }`}>
+                        {step.title}
+                      </h3>
+                      <p className="text-xs text-muted-foreground hidden md:block">
+                        {step.description}
+                      </p>
+                    </div>
+                    
+                    {/* Status Badge */}
+                    {isActive && (
+                      <Badge className="absolute -top-2 -right-2 bg-gradient-to-r from-primary to-secondary text-primary-foreground rounded-xl px-2 py-1">
+                        Atual
+                      </Badge>
+                    )}
+                    {isCompleted && (
+                      <Badge variant="secondary" className="absolute -top-2 -right-2 rounded-xl px-2 py-1">
+                        ✓
+                      </Badge>
+                    )}
                   </div>
                 );
               })}
             </div>
 
             {/* Step Content */}
-            <div className="min-h-[400px]">
+            <div className="min-h-[500px] bg-gradient-to-br from-background to-muted/20 rounded-2xl p-8 border border-muted/50">
               {renderStepContent()}
             </div>
           </CardContent>

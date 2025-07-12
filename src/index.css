@@ -34,8 +34,10 @@
     --input: 214.3 31.8% 91.4%;
     --ring: 221 83% 53%;
 
-    /* Design Tokens */
-    --radius: 0.75rem; /* radius-lg */
+    /* Design Tokens - More Rounded */
+    --radius: 1.25rem; /* radius-xl for rounded interface */
+    --radius-card: 1.5rem; /* extra rounded cards */
+    --radius-button: 1rem; /* rounded buttons */
     
     /* Sidebar */
     --sidebar-background: 0 0% 98%;
@@ -100,13 +102,28 @@
 @layer components {
   /* Adapta Custom Components */
   .card-elegant {
-    @apply bg-card text-card-foreground rounded-lg border;
+    @apply bg-card text-card-foreground border;
+    border-radius: var(--radius-card);
     box-shadow: 0 4px 14px rgba(0, 0, 0, 0.08);
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   }
   
   .card-elegant:hover {
     box-shadow: 0 10px 30px -10px hsl(var(--primary) / 0.2);
+    transform: translateY(-2px);
+  }
+
+  .card-premium {
+    @apply bg-gradient-to-br from-card via-card to-muted/20 text-card-foreground border-2;
+    border-radius: var(--radius-card);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12), 0 0 0 1px hsl(var(--primary) / 0.1);
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  
+  .card-premium:hover {
+    box-shadow: 0 20px 60px -10px hsl(var(--primary) / 0.3), 0 0 0 1px hsl(var(--primary) / 0.2);
+    transform: translateY(-4px);
+    border-color: hsl(var(--primary) / 0.3);
   }
 
   .gradient-primary {
@@ -123,11 +140,13 @@
 
   /* Chat Components */
   .message-bubble-user {
-    @apply bg-primary text-primary-foreground rounded-2xl rounded-br-md px-4 py-3 max-w-[80%] ml-auto;
+    @apply bg-primary text-primary-foreground px-6 py-4 max-w-[80%] ml-auto;
+    border-radius: 2rem 2rem 0.5rem 2rem;
   }
 
   .message-bubble-assistant {
-    @apply bg-muted text-muted-foreground rounded-2xl rounded-bl-md px-4 py-3 max-w-[80%] mr-auto;
+    @apply bg-muted text-muted-foreground px-6 py-4 max-w-[80%] mr-auto;
+    border-radius: 2rem 2rem 2rem 0.5rem;
   }
 
   /* Animation Utilities */

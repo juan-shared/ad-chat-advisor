@@ -4,7 +4,8 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { Loader2, Globe, CheckCircle, AlertCircle } from 'lucide-react';
+import { Badge } from '@/components/ui/badge';
+import { Loader2, Globe, CheckCircle, Sparkles, Shield, Zap } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 
 interface SiteMapperProps {
@@ -65,56 +66,83 @@ export const SiteMapper = ({ onNext }: SiteMapperProps) => {
   };
 
   return (
-    <div className="space-y-6 animate-fade-in">
-      <div className="text-center">
-        <Globe className="h-12 w-12 text-primary mx-auto mb-4" />
-        <h3 className="text-2xl font-bold text-foreground mb-2">
-          Mapeamento do Site
-        </h3>
-        <p className="text-muted-foreground">
-          Digite a URL do seu site para extrair informações automaticamente
-        </p>
+    <div className="max-w-4xl mx-auto space-y-8 animate-fade-in">
+      {/* Header */}
+      <div className="text-center space-y-6">
+        <div className="w-24 h-24 rounded-3xl bg-gradient-to-br from-primary/10 to-secondary/10 flex items-center justify-center mx-auto shadow-lg">
+          <Globe className="h-12 w-12 text-primary" />
+        </div>
+        <div>
+          <h3 className="text-3xl font-bold text-foreground mb-4">
+            Conecte seu Site
+          </h3>
+          <p className="text-xl text-muted-foreground leading-relaxed max-w-2xl mx-auto">
+            Nossa IA analisará seu site e extrairá automaticamente informações sobre seus produtos, 
+            serviços e público-alvo para criar um perfil personalizado.
+          </p>
+        </div>
       </div>
 
-      <Card className="max-w-2xl mx-auto">
-        <CardHeader>
-          <CardTitle>URL do seu site</CardTitle>
-          <CardDescription>
-            Vamos analisar seu site e extrair informações relevantes sobre sua empresa
-          </CardDescription>
-        </CardHeader>
-        <CardContent className="space-y-4">
-          <div className="space-y-2">
-            <Label htmlFor="website-url">URL do Website</Label>
-            <Input
-              id="website-url"
-              type="url"
-              placeholder="https://www.meusite.com.br"
-              value={inputUrl}
-              onChange={(e) => setInputUrl(e.target.value)}
-              disabled={isLoading}
-              className="text-lg"
-            />
+      {/* Main Card */}
+      <Card className="card-premium p-8 overflow-hidden">
+        <div className="space-y-8">
+          {/* URL Input Section */}
+          <div className="space-y-6">
+            <div className="flex items-center gap-3">
+              <Badge className="bg-gradient-to-r from-primary to-secondary text-primary-foreground px-4 py-2 rounded-xl">
+                Passo 1
+              </Badge>
+              <h4 className="text-xl font-semibold text-foreground">URL do seu Site</h4>
+            </div>
+            
+            <div className="space-y-4">
+              <Label htmlFor="website-url" className="text-base font-medium">
+                Digite a URL completa do seu website
+              </Label>
+              <div className="relative">
+                <Input
+                  id="website-url"
+                  type="url"
+                  placeholder="https://www.meusite.com.br"
+                  value={inputUrl}
+                  onChange={(e) => setInputUrl(e.target.value)}
+                  disabled={isLoading}
+                  className="h-16 text-lg pl-6 pr-16 rounded-2xl border-2 focus:border-primary/50 shadow-sm"
+                />
+                <Globe className="absolute right-6 top-1/2 transform -translate-y-1/2 h-6 w-6 text-muted-foreground" />
+              </div>
+              <p className="text-sm text-muted-foreground flex items-center gap-2">
+                <Shield className="h-4 w-4" />
+                Seus dados estão seguros e serão usados apenas para gerar seu perfil.
+              </p>
+            </div>
           </div>
 
+          {/* Site Preview */}
           {profile.siteData && (
-            <Card className="bg-muted/50">
-              <CardContent className="pt-4">
-                <div className="flex items-start space-x-3">
-                  <CheckCircle className="h-5 w-5 text-green-500 mt-0.5" />
-                  <div className="space-y-2 flex-1">
-                    <h4 className="font-semibold">{profile.siteData.title}</h4>
-                    <p className="text-sm text-muted-foreground">
-                      {profile.siteData.description}
-                    </p>
+            <Card className="bg-gradient-to-br from-green-50 to-emerald-50 dark:from-green-950/30 dark:to-emerald-950/30 border-green-200 dark:border-green-800/50">
+              <CardContent className="pt-6">
+                <div className="flex items-start space-x-4">
+                  <div className="w-12 h-12 rounded-2xl bg-green-100 dark:bg-green-900/50 flex items-center justify-center flex-shrink-0">
+                    <CheckCircle className="h-6 w-6 text-green-600 dark:text-green-400" />
+                  </div>
+                  <div className="space-y-4 flex-1">
+                    <div>
+                      <h4 className="text-lg font-semibold text-green-900 dark:text-green-100">
+                        {profile.siteData.title}
+                      </h4>
+                      <p className="text-green-700 dark:text-green-300 mt-2">
+                        {profile.siteData.description}
+                      </p>
+                    </div>
                     {profile.siteData.images.length > 0 && (
-                      <div className="flex space-x-2">
-                        {profile.siteData.images.slice(0, 3).map((img, index) => (
+                      <div className="flex space-x-3">
+                        {profile.siteData.images.slice(0, 4).map((img, index) => (
                           <img
                             key={index}
                             src={img}
                             alt={`Site preview ${index + 1}`}
-                            className="h-16 w-16 object-cover rounded border"
+                            className="h-20 w-20 object-cover rounded-2xl border-2 border-green-200 dark:border-green-700 shadow-sm"
                           />
                         ))}
                       </div>
@@ -125,33 +153,71 @@ export const SiteMapper = ({ onNext }: SiteMapperProps) => {
             </Card>
           )}
 
-          <div className="flex gap-3">
+          {/* Action Button */}
+          <div className="flex gap-4">
             <Button
               onClick={handleMapSite}
               disabled={isLoading || !inputUrl.trim()}
-              className="flex-1"
+              className="flex-1 h-16 text-lg gradient-primary rounded-2xl shadow-lg hover:shadow-xl transition-all"
             >
               {isLoading ? (
                 <>
-                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                  Mapeando Site...
+                  <Loader2 className="mr-3 h-6 w-6 animate-spin" />
+                  Analisando Site...
                 </>
               ) : (
                 <>
-                  <Globe className="mr-2 h-4 w-4" />
-                  Mapear Site
+                  <Sparkles className="mr-3 h-6 w-6" />
+                  Mapear Site com IA
                 </>
               )}
             </Button>
             
             {profile.siteData && (
-              <Button variant="outline" onClick={onNext}>
+              <Button 
+                variant="outline" 
+                onClick={onNext}
+                className="h-16 px-8 rounded-2xl border-2"
+              >
                 Continuar
               </Button>
             )}
           </div>
-        </CardContent>
+        </div>
       </Card>
+
+      {/* Features Grid */}
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <Card className="card-elegant p-6 text-center hover:scale-105 transition-transform">
+          <div className="w-16 h-16 rounded-3xl bg-gradient-to-br from-primary/10 to-primary/20 flex items-center justify-center mx-auto mb-4">
+            <Sparkles className="h-8 w-8 text-primary" />
+          </div>
+          <h4 className="text-lg font-semibold text-foreground mb-2">Análise Inteligente</h4>
+          <p className="text-muted-foreground leading-relaxed">
+            Nossa IA extrai automaticamente informações relevantes do seu site para criar um perfil completo.
+          </p>
+        </Card>
+
+        <Card className="card-elegant p-6 text-center hover:scale-105 transition-transform">
+          <div className="w-16 h-16 rounded-3xl bg-gradient-to-br from-secondary/10 to-secondary/20 flex items-center justify-center mx-auto mb-4">
+            <Shield className="h-8 w-8 text-secondary" />
+          </div>
+          <h4 className="text-lg font-semibold text-foreground mb-2">Totalmente Seguro</h4>
+          <p className="text-muted-foreground leading-relaxed">
+            Todos os dados são criptografados e protegidos. Sua privacidade é nossa prioridade.
+          </p>
+        </Card>
+
+        <Card className="card-elegant p-6 text-center hover:scale-105 transition-transform">
+          <div className="w-16 h-16 rounded-3xl bg-gradient-to-br from-primary/10 to-secondary/10 flex items-center justify-center mx-auto mb-4">
+            <Zap className="h-8 w-8 text-primary" />
+          </div>
+          <h4 className="text-lg font-semibold text-foreground mb-2">Super Rápido</h4>
+          <p className="text-muted-foreground leading-relaxed">
+            Processo otimizado que leva apenas alguns segundos para ser concluído.
+          </p>
+        </Card>
+      </div>
     </div>
   );
 };
