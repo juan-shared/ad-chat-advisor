@@ -8,10 +8,13 @@ import { Badge } from '@/components/ui/badge';
 import { FileUpload } from '@/components/FileUpload';
 import { SiteMapper } from '@/components/SiteMapper';
 import { ProfileSummary } from '@/components/ProfileSummary';
-import { Globe, Upload, Settings, CheckCircle } from 'lucide-react';
+import { VendorTypeSelector } from '@/components/VendorTypeSelector';
+import { AdPreview } from '@/components/AdPreview';
+import { Globe, Upload, Settings, CheckCircle, User } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 
 const steps = [
+  { id: 0, title: 'Tipo de Anunciante', icon: User, description: 'Escolha sua categoria' },
   { id: 1, title: 'URL do Site', icon: Globe, description: 'Mapeie seu site automaticamente' },
   { id: 2, title: 'Upload de Produtos', icon: Upload, description: 'Adicione seus produtos e documentos' },
   { id: 3, title: 'Configuração', icon: Settings, description: 'Revise e ajuste o perfil gerado' },
@@ -32,7 +35,7 @@ const Ads = () => {
     }
   }, [error, toast]);
 
-  const progress = (currentStep / steps.length) * 100;
+  const progress = ((currentStep + 1) / steps.length) * 100;
 
   const handleNextStep = () => {
     if (currentStep < steps.length) {
@@ -41,13 +44,15 @@ const Ads = () => {
   };
 
   const handlePrevStep = () => {
-    if (currentStep > 1) {
+    if (currentStep > 0) {
       setCurrentStep(currentStep - 1);
     }
   };
 
   const renderStepContent = () => {
     switch (currentStep) {
+      case 0:
+        return <VendorTypeSelector onNext={handleNextStep} />;
       case 1:
         return <SiteMapper onNext={handleNextStep} />;
       case 2:
@@ -65,7 +70,7 @@ const Ads = () => {
               </p>
             </div>
             <div className="flex gap-4 justify-center">
-              <Button variant="outline" onClick={() => setCurrentStep(1)}>
+              <Button variant="outline" onClick={() => setCurrentStep(0)}>
                 Criar Novo Perfil
               </Button>
               <Button className="gradient-primary">
@@ -111,9 +116,9 @@ const Ads = () => {
                   </div>
                   <div>
                     <CardTitle className="text-2xl bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
-                      {steps[currentStep - 1]?.title}
+                      {steps[currentStep]?.title}
                     </CardTitle>
-                    <CardDescription className="text-base">{steps[currentStep - 1]?.description}</CardDescription>
+                    <CardDescription className="text-base">{steps[currentStep]?.description}</CardDescription>
                   </div>
                 </div>
               </div>
@@ -122,7 +127,7 @@ const Ads = () => {
                   {Math.round(progress)}% completo
                 </Badge>
                 <div className="text-sm text-muted-foreground">
-                  Passo {currentStep} de {steps.length}
+                  Passo {currentStep + 1} de {steps.length}
                 </div>
               </div>
             </div>
@@ -137,7 +142,7 @@ const Ads = () => {
 
           {/* Steps Indicator */}
           <CardContent className="pt-8">
-            <div className="grid grid-cols-4 gap-4 mb-12">
+            <div className="grid grid-cols-5 gap-4 mb-12">
               {steps.map((step) => {
                 const Icon = step.icon;
                 const isActive = currentStep === step.id;
@@ -209,8 +214,17 @@ const Ads = () => {
             </div>
 
             {/* Step Content */}
-            <div className="min-h-[500px] bg-gradient-to-br from-background to-muted/20 rounded-2xl p-8 border border-muted/50">
-              {renderStepContent()}
+            <div className="grid lg:grid-cols-3 gap-8">
+              <div className="lg:col-span-2 min-h-[500px] bg-gradient-to-br from-background to-muted/20 rounded-2xl p-8 border border-muted/50">
+                {renderStepContent()}
+              </div>
+              
+              {/* Preview Sidebar */}
+              {currentStep > 0 && (
+                <div className="lg:col-span-1 space-y-6">
+                  <AdPreview />
+                </div>
+              )}
             </div>
           </CardContent>
         </Card>

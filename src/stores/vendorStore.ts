@@ -6,7 +6,10 @@ export interface SiteData {
   images: string[];
 }
 
+export type VendorType = 'creator' | 'produto' | 'solucao';
+
 export interface VendorProfile {
+  type: VendorType | null;
   url: string;
   siteData: SiteData | null;
   products: File[];
@@ -23,6 +26,7 @@ interface VendorStore {
   
   // Actions
   setCurrentStep: (step: number) => void;
+  setVendorType: (type: VendorType) => void;
   setUrl: (url: string) => void;
   setSiteData: (data: SiteData) => void;
   addProduct: (file: File) => void;
@@ -36,6 +40,7 @@ interface VendorStore {
 }
 
 const initialProfile: VendorProfile = {
+  type: null,
   url: '',
   siteData: null,
   products: [],
@@ -46,11 +51,15 @@ const initialProfile: VendorProfile = {
 
 export const useVendorStore = create<VendorStore>((set, get) => ({
   profile: initialProfile,
-  currentStep: 1,
+  currentStep: 0,
   isLoading: false,
   error: null,
 
   setCurrentStep: (step) => set({ currentStep: step }),
+  
+  setVendorType: (type) => set(state => ({
+    profile: { ...state.profile, type }
+  })),
   
   setUrl: (url) => set(state => ({
     profile: { ...state.profile, url }
