@@ -137,7 +137,7 @@ export const ProfileSummary = ({ onNext, onPrev }: ProfileSummaryProps) => {
             <div>
               <Label className="text-sm font-medium">Produtos/Documentos</Label>
               <p className="text-sm text-muted-foreground">
-                {profile.products.length} arquivo(s) adicionado(s)
+                {profile.contextFiles.length} arquivo(s) adicionado(s)
               </p>
             </div>
           </CardContent>

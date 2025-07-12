@@ -5,86 +5,52 @@
 /* Adapta MVP - Design System */
 
 @layer base {
+  /* Dark Theme - Adapta Colors */
   :root {
-    /* Base Colors */
-    --background: 0 0% 100%;
-    --foreground: 222.2 84% 4.9%;
-    --card: 0 0% 100%;
-    --card-foreground: 222.2 84% 4.9%;
-    --popover: 0 0% 100%;
-    --popover-foreground: 222.2 84% 4.9%;
-
-    /* Adapta Brand Colors */
-    --primary: 221 83% 53%; /* #1D4ED8 */
-    --primary-foreground: 210 40% 98%;
-    --primary-glow: 221 83% 65%;
+    --background: 13 22 20; /* #0D1614 */
+    --foreground: 248 250 252;
+    --card: 15 25 22;
+    --card-foreground: 248 250 252;
+    --popover: 15 25 22;
+    --popover-foreground: 248 250 252;
+    --primary: 38 126 113; /* #267E71 */
+    --primary-foreground: 255 255 255;
+    --primary-glow: 46 146 131;
+    --secondary: 30 41 38;
+    --secondary-foreground: 248 250 252;
+    --muted: 25 35 32;
+    --muted-foreground: 156 163 175;
+    --accent: 30 41 38;
+    --accent-foreground: 248 250 252;
+    --destructive: 239 68 68;
+    --destructive-foreground: 248 250 252;
+    --border: 30 41 38;
+    --input: 30 41 38;
+    --ring: 38 126 113;
     
-    --secondary: 262 83% 58%; /* #9333EA */
-    --secondary-foreground: 210 40% 98%;
-    --secondary-glow: 262 83% 70%;
-
-    /* UI Colors */
-    --muted: 210 40% 96.1%;
-    --muted-foreground: 215.4 16.3% 46.9%;
-    --accent: 210 40% 96.1%;
-    --accent-foreground: 222.2 47.4% 11.2%;
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 210 40% 98%;
-    --border: 214.3 31.8% 91.4%;
-    --input: 214.3 31.8% 91.4%;
-    --ring: 221 83% 53%;
-
-    /* Design Tokens - More Rounded */
-    --radius: 1.25rem; /* radius-xl for rounded interface */
-    --radius-card: 1.5rem; /* extra rounded cards */
-    --radius-button: 1rem; /* rounded buttons */
+    /* Custom tokens */
+    --radius: 1.25rem;
+    --radius-card: 1.5rem;
+    --radius-button: 1rem;
+    
+    /* Gradients */
+    --gradient-primary: linear-gradient(135deg, hsl(var(--primary)), hsl(var(--primary-glow)));
+    --gradient-secondary: linear-gradient(135deg, hsl(var(--secondary)), hsl(var(--accent)));
+    --gradient-background: linear-gradient(180deg, hsl(var(--background)), hsl(var(--muted)));
+    
+    /* Shadows */
+    --shadow-card: 0 10px 30px -10px hsl(var(--primary) / 0.2);
+    --shadow-glow: 0 0 40px hsl(var(--primary-glow) / 0.3);
     
     /* Sidebar */
-    --sidebar-background: 0 0% 98%;
-    --sidebar-foreground: 240 5.3% 26.1%;
-    --sidebar-primary: 240 5.9% 10%;
-    --sidebar-primary-foreground: 0 0% 98%;
-    --sidebar-accent: 240 4.8% 95.9%;
-    --sidebar-accent-foreground: 240 5.9% 10%;
-    --sidebar-border: 220 13% 91%;
-    --sidebar-ring: 217.2 91.2% 59.8%;
-  }
-
-  .dark {
-    --background: 222.2 84% 4.9%;
-    --foreground: 210 40% 98%;
-    --card: 222.2 84% 4.9%;
-    --card-foreground: 210 40% 98%;
-    --popover: 222.2 84% 4.9%;
-    --popover-foreground: 210 40% 98%;
-
-    /* Adapta Brand Colors - Dark Mode */
-    --primary: 221 83% 53%;
-    --primary-foreground: 210 40% 98%;
-    --primary-glow: 221 83% 45%;
-    
-    --secondary: 262 83% 58%;
-    --secondary-foreground: 210 40% 98%;
-    --secondary-glow: 262 83% 50%;
-
-    --muted: 217.2 32.6% 17.5%;
-    --muted-foreground: 215 20.2% 65.1%;
-    --accent: 217.2 32.6% 17.5%;
-    --accent-foreground: 210 40% 98%;
-    --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 210 40% 98%;
-    --border: 217.2 32.6% 17.5%;
-    --input: 217.2 32.6% 17.5%;
-    --ring: 221 83% 53%;
-    
-    --sidebar-background: 240 5.9% 10%;
-    --sidebar-foreground: 240 4.8% 95.9%;
-    --sidebar-primary: 224.3 76.3% 48%;
-    --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 240 3.7% 15.9%;
-    --sidebar-accent-foreground: 240 4.8% 95.9%;
-    --sidebar-border: 240 3.7% 15.9%;
-    --sidebar-ring: 217.2 91.2% 59.8%;
+    --sidebar-background: 15 25 22;
+    --sidebar-foreground: 248 250 252;
+    --sidebar-primary: 38 126 113;
+    --sidebar-primary-foreground: 255 255 255;
+    --sidebar-accent: 25 35 32;
+    --sidebar-accent-foreground: 248 250 252;
+    --sidebar-border: 30 41 38;
+    --sidebar-ring: 38 126 113;
   }
 }
 

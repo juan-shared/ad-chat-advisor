@@ -12,7 +12,7 @@ export interface VendorProfile {
   type: VendorType | null;
   url: string;
   siteData: SiteData | null;
-  products: File[];
+  contextFiles: File[];
   suggestedPUV: string;
   suggestedICP: string[];
   isComplete: boolean;
@@ -29,8 +29,8 @@ interface VendorStore {
   setVendorType: (type: VendorType) => void;
   setUrl: (url: string) => void;
   setSiteData: (data: SiteData) => void;
-  addProduct: (file: File) => void;
-  removeProduct: (index: number) => void;
+  addContextFile: (file: File) => void;
+  removeContextFile: (index: number) => void;
   setSuggestedPUV: (puv: string) => void;
   setSuggestedICP: (icp: string[]) => void;
   setLoading: (loading: boolean) => void;
@@ -43,7 +43,7 @@ const initialProfile: VendorProfile = {
   type: null,
   url: '',
   siteData: null,
-  products: [],
+  contextFiles: [],
   suggestedPUV: '',
   suggestedICP: [],
   isComplete: false,
@@ -69,17 +69,17 @@ export const useVendorStore = create<VendorStore>((set, get) => ({
     profile: { ...state.profile, siteData: data }
   })),
   
-  addProduct: (file) => set(state => ({
+  addContextFile: (file) => set(state => ({
     profile: { 
       ...state.profile, 
-      products: [...state.profile.products, file]
+      contextFiles: [...state.profile.contextFiles, file]
     }
   })),
   
-  removeProduct: (index) => set(state => ({
+  removeContextFile: (index) => set(state => ({
     profile: { 
       ...state.profile, 
-      products: state.profile.products.filter((_, i) => i !== index)
+      contextFiles: state.profile.contextFiles.filter((_, i) => i !== index)
     }
   })),
   
