@@ -49,34 +49,34 @@ Esta recomendação foi gerada usando IA que analisa seu perfil, histórico de c
   }
 
   return (
-    <div className="mt-6 space-y-4 animate-fade-in">
+    <div className="mt-4 md:mt-6 space-y-3 md:space-y-4 animate-fade-in">
       <div className="flex items-center gap-2">
-        <div className="w-6 h-6 rounded-full bg-gradient-to-r from-primary to-primary-glow flex items-center justify-center">
-          <Sparkles className="h-3 w-3 text-white" />
+        <div className="w-5 h-5 md:w-6 md:h-6 rounded-full bg-gradient-to-r from-primary to-primary-glow flex items-center justify-center">
+          <Sparkles className="h-2.5 w-2.5 md:h-3 md:w-3 text-white" />
         </div>
-        <span className="text-sm font-medium text-foreground">
+        <span className="text-xs md:text-sm font-medium text-foreground">
           Recomendações baseadas na conversa
         </span>
-        <Badge variant="secondary" className="text-xs rounded-full px-2">
+        <Badge variant="secondary" className="text-xs rounded-full px-2 h-5">
           {recommendations.length}
         </Badge>
       </div>
 
-      <div className="grid gap-3">
+      <div className="grid gap-2 md:gap-3">
         {recommendations.map((recommendation) => (
           <Card 
             key={recommendation.id} 
-            className="bg-card/50 border-border/50 backdrop-blur-sm hover:bg-card/70 transition-all duration-200 hover:shadow-lg hover:border-primary/20"
+            className="bg-card/40 border-border/30 backdrop-blur-sm hover:bg-card/60 transition-all duration-200 hover:shadow-md hover:border-primary/20 overflow-hidden"
           >
-            <CardContent className="p-4">
-              <div className="flex gap-4">
+            <CardContent className="p-3 md:p-4">
+              <div className="flex gap-3 md:gap-4">
                 {/* Image */}
                 {recommendation.mediaUrl && (
                   <div className="flex-shrink-0">
                     <img
                       src={recommendation.mediaUrl}
                       alt={recommendation.title}
-                      className="w-16 h-16 object-cover rounded-xl border border-border/50"
+                      className="w-12 h-12 md:w-16 md:h-16 object-cover rounded-lg md:rounded-xl border border-border/30"
                       onError={(e) => {
                         e.currentTarget.src = '/placeholder.svg';
                       }}
@@ -86,8 +86,8 @@ Esta recomendação foi gerada usando IA que analisa seu perfil, histórico de c
 
                 {/* Content */}
                 <div className="flex-1 min-w-0">
-                  <div className="flex items-start justify-between gap-3 mb-2">
-                    <h4 className="font-semibold text-foreground text-sm leading-tight">
+                  <div className="flex items-start justify-between gap-2 md:gap-3 mb-2">
+                    <h4 className="font-semibold text-foreground text-xs md:text-sm leading-tight line-clamp-2">
                       {recommendation.title}
                     </h4>
                     {recommendation.relevanceScore && (
@@ -102,31 +102,33 @@ Esta recomendação foi gerada usando IA que analisa seu perfil, histórico de c
                     )}
                   </div>
 
-                  <p className="text-xs text-muted-foreground mb-3 leading-relaxed">
+                  <p className="text-xs text-muted-foreground mb-3 leading-relaxed line-clamp-2 md:line-clamp-3">
                     {recommendation.summary}
                   </p>
 
                   {/* Actions */}
-                  <div className="flex items-center gap-2">
+                  <div className="flex items-center gap-2 flex-wrap">
                     <Button 
                       size="sm" 
-                      className="h-7 text-xs px-3 rounded-xl bg-gradient-to-r from-primary to-primary-glow hover:from-primary-glow hover:to-primary"
+                      className="h-6 md:h-7 text-xs px-2 md:px-3 rounded-lg md:rounded-xl bg-gradient-to-r from-primary to-primary-glow hover:from-primary-glow hover:to-primary"
                     >
                       <ExternalLink className="h-3 w-3 mr-1" />
-                      {recommendation.cta}
+                      <span className="hidden sm:inline">{recommendation.cta}</span>
+                      <span className="sm:hidden">Ver</span>
                     </Button>
                     <Button
                       variant="ghost"
                       size="sm"
                       onClick={() => handleWhyRecommendation(recommendation)}
-                      className="h-7 text-xs px-3 rounded-xl"
+                      className="h-6 md:h-7 text-xs px-2 md:px-3 rounded-lg md:rounded-xl"
                     >
                       <HelpCircle className="h-3 w-3 mr-1" />
-                      Por quê?
+                      <span className="hidden md:inline">Por quê?</span>
+                      <span className="md:hidden">?</span>
                     </Button>
                     
                     {/* Metrics */}
-                    <div className="flex items-center gap-1 ml-auto text-xs text-muted-foreground">
+                    <div className="hidden sm:flex items-center gap-1 ml-auto text-xs text-muted-foreground">
                       <TrendingUp className="h-3 w-3" />
                       <span>Tendência</span>
                     </div>
