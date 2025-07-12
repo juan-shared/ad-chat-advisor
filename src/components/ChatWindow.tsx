@@ -207,37 +207,15 @@ Esta √© uma resposta simulada que demonstra como o chat funcionaria com integra√
                         <div
                           className={`max-w-[85%] md:max-w-[75%] ${
                             message.role === 'user'
-                              ? 'bg-gradient-to-br from-primary to-primary-glow text-white rounded-lg shadow-lg border border-primary/20'
-                              : 'bg-card/60 text-card-foreground rounded-lg border border-border/30 backdrop-blur-sm shadow-sm'
-                          } px-4 py-3 md:px-6 md:py-4`}
+                              ? 'bg-muted text-foreground rounded-lg shadow-sm border border-border/50 px-4 py-3 md:px-6 md:py-4'
+                              : 'text-foreground px-2 py-1'
+                          }`}
                         >
                           <div className="prose prose-sm md:prose-base max-w-none">
                             <p className="whitespace-pre-wrap m-0 leading-relaxed text-sm md:text-base">
                               {message.content}
                             </p>
                           </div>
-
-                          {message.role === 'assistant' && message.content && (
-                            <div className="flex items-center gap-1 md:gap-2 mt-3 md:mt-4 pt-3 border-t border-border/20">
-                              <Button
-                                variant="ghost"
-                                size="sm"
-                                onClick={() => copyMessage(message.content)}
-                                className="h-6 md:h-7 px-2 md:px-3 text-xs rounded-lg hover:bg-muted/30"
-                              >
-                                <Copy className="h-3 w-3 mr-1" />
-                                <span className="hidden sm:inline">Copiar</span>
-                              </Button>
-                              <Button variant="ghost" size="sm" className="h-6 md:h-7 px-2 md:px-3 text-xs rounded-lg hover:bg-muted/30">
-                                <ThumbsUp className="h-3 w-3 mr-1" />
-                                <span className="hidden sm:inline">√ötil</span>
-                              </Button>
-                              <Button variant="ghost" size="sm" className="h-6 md:h-7 px-2 md:px-3 text-xs rounded-lg hover:bg-muted/30">
-                                <ThumbsDown className="h-3 w-3 mr-1" />
-                                <span className="hidden sm:inline">Melhorar</span>
-                              </Button>
-                            </div>
-                          )}
                         </div>
 
                         {message.role === 'user' && (
@@ -270,7 +248,7 @@ Esta √© uma resposta simulada que demonstra como o chat funcionaria com integra√
                       <Bot className="h-4 w-4 md:h-5 md:w-5" />
                     </AvatarFallback>
                   </Avatar>
-                  <div className="bg-card/60 rounded-lg border border-border/30 backdrop-blur-sm px-4 py-3 md:px-6 md:py-4 shadow-sm">
+                  <div className="text-foreground px-2 py-1">
                     <div className="flex items-center gap-3">
                       <div className="flex gap-1">
                         <div className="w-2 h-2 bg-primary rounded-full animate-bounce" style={{ animationDelay: '0ms' }}></div>
