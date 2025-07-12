@@ -49,91 +49,66 @@ Esta recomendação foi gerada usando IA que analisa seu perfil, histórico de c
   }
 
   return (
-    <div className="mt-4 md:mt-6 space-y-3 md:space-y-4 animate-fade-in">
-      <div className="flex items-center gap-2">
-        <div className="w-5 h-5 md:w-6 md:h-6 rounded-lg bg-gradient-to-r from-primary to-primary-glow flex items-center justify-center">
-          <Sparkles className="h-2.5 w-2.5 md:h-3 md:w-3 text-white" />
+    <div className="mt-4 md:mt-6 space-y-3 animate-fade-in">
+      <div className="flex items-center gap-2 mb-3">
+        <div className="w-4 h-4 rounded-md bg-gradient-to-r from-primary to-primary-glow flex items-center justify-center">
+          <Sparkles className="h-2.5 w-2.5 text-white" />
         </div>
-        <span className="text-xs md:text-sm font-medium text-foreground">
-          Recomendações baseadas na conversa
+        <span className="text-xs font-medium text-muted-foreground">
+          Recomendações
         </span>
-        <Badge variant="secondary" className="text-xs rounded-lg px-2 h-5">
-          {recommendations.length}
-        </Badge>
       </div>
 
-      <div className="grid gap-2 md:gap-3">
-        {recommendations.map((recommendation) => (
+      <div className="grid grid-cols-2 gap-3">
+        {recommendations.slice(0, 2).map((recommendation) => (
           <Card 
             key={recommendation.id} 
-            className="bg-card/40 border-border/30 backdrop-blur-sm hover:bg-card/60 transition-all duration-200 hover:shadow-md hover:border-primary/20 overflow-hidden"
+            className="bg-card/40 border-border/30 hover:bg-card/60 transition-all duration-200 hover:border-primary/20 overflow-hidden"
           >
-            <CardContent className="p-3 md:p-4">
-              <div className="flex gap-3 md:gap-4">
-                {/* Image */}
-                {recommendation.mediaUrl && (
-                  <div className="flex-shrink-0">
+            <CardContent className="p-3">
+              <div className="space-y-2">
+                {/* Header */}
+                <div className="flex items-start gap-2">
+                  {recommendation.mediaUrl && (
                     <img
                       src={recommendation.mediaUrl}
                       alt={recommendation.title}
-                      className="w-12 h-12 md:w-16 md:h-16 object-cover rounded-lg border border-border/30"
+                      className="w-8 h-8 object-cover rounded-md border border-border/30 flex-shrink-0"
                       onError={(e) => {
                         e.currentTarget.src = '/placeholder.svg';
                       }}
                     />
-                  </div>
-                )}
-
-                {/* Content */}
-                <div className="flex-1 min-w-0">
-                  <div className="flex items-start justify-between gap-2 md:gap-3 mb-2">
-                    <h4 className="font-semibold text-foreground text-xs md:text-sm leading-tight line-clamp-2">
+                  )}
+                  <div className="flex-1 min-w-0">
+                    <h4 className="font-medium text-foreground text-xs leading-tight line-clamp-2">
                       {recommendation.title}
                     </h4>
                     {recommendation.relevanceScore && (
-                      <div className="flex items-center gap-1 flex-shrink-0">
-                        <Star className="h-3 w-3" />
+                      <div className="flex items-center gap-1 mt-1">
+                        <Star className="h-2.5 w-2.5" />
                         <span 
-                          className={`text-xs font-medium ${getRelevanceColor(recommendation.relevanceScore)}`}
+                          className={`text-xs ${getRelevanceColor(recommendation.relevanceScore)}`}
                         >
                           {Math.round(recommendation.relevanceScore * 100)}%
                         </span>
                       </div>
                     )}
                   </div>
-
-                  <p className="text-xs text-muted-foreground mb-3 leading-relaxed line-clamp-2 md:line-clamp-3">
-                    {recommendation.summary}
-                  </p>
-
-                  {/* Actions */}
-                  <div className="flex items-center gap-2 flex-wrap">
-                    <Button 
-                      size="sm" 
-                      className="h-6 md:h-7 text-xs px-2 md:px-3 rounded-lg bg-gradient-to-r from-primary to-primary-glow hover:from-primary-glow hover:to-primary"
-                    >
-                      <ExternalLink className="h-3 w-3 mr-1" />
-                      <span className="hidden sm:inline">{recommendation.cta}</span>
-                      <span className="sm:hidden">Ver</span>
-                    </Button>
-                    <Button
-                      variant="ghost"
-                      size="sm"
-                      onClick={() => handleWhyRecommendation(recommendation)}
-                      className="h-6 md:h-7 text-xs px-2 md:px-3 rounded-lg"
-                    >
-                      <HelpCircle className="h-3 w-3 mr-1" />
-                      <span className="hidden md:inline">Por quê?</span>
-                      <span className="md:hidden">?</span>
-                    </Button>
-                    
-                    {/* Metrics */}
-                    <div className="hidden sm:flex items-center gap-1 ml-auto text-xs text-muted-foreground">
-                      <TrendingUp className="h-3 w-3" />
-                      <span>Tendência</span>
-                    </div>
-                  </div>
                 </div>
+
+                {/* Summary */}
+                <p className="text-xs text-muted-foreground leading-relaxed line-clamp-2">
+                  {recommendation.summary}
+                </p>
+
+                {/* Action */}
+                <Button 
+                  size="sm" 
+                  className="w-full h-6 text-xs px-2 rounded-md bg-gradient-to-r from-primary to-primary-glow hover:from-primary-glow hover:to-primary"
+                >
+                  <ExternalLink className="h-2.5 w-2.5 mr-1" />
+                  {recommendation.cta}
+                </Button>
               </div>
             </CardContent>
           </Card>
