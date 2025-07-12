@@ -12,7 +12,7 @@ interface FileUploadProps {
 }
 
 export const FileUpload = ({ onNext, onPrev }: FileUploadProps) => {
-  const { profile, addProduct, removeProduct } = useVendorStore();
+  const { profile, addContextFile, removeContextFile } = useVendorStore();
   const fileInputRef = useRef<HTMLInputElement>(null);
   const { toast } = useToast();
 
@@ -20,9 +20,9 @@ export const FileUpload = ({ onNext, onPrev }: FileUploadProps) => {
     if (!files) return;
 
     Array.from(files).forEach(file => {
-      // Validate file type
-      const allowedTypes = ['image/', 'application/pdf', 'text/csv', 'application/vnd.ms-excel'];
-      const isValidType = allowedTypes.some(type => file.type.startsWith(type));
+      // Validate file type - focused on context materials
+      const allowedTypes = ['application/pdf', 'text/', 'application/vnd.ms-excel', 'application/vnd.openxmlformats'];
+      const isValidType = allowedTypes.some(type => file.type.startsWith(type)) || file.name.endsWith('.md');
       
       if (!isValidType) {
         toast({
@@ -43,7 +43,7 @@ export const FileUpload = ({ onNext, onPrev }: FileUploadProps) => {
         return;
       }
 
-      addProduct(file);
+      addContextFile(file);
     });
   };
 
@@ -67,18 +67,18 @@ export const FileUpload = ({ onNext, onPrev }: FileUploadProps) => {
       <div className="text-center">
         <Upload className="h-12 w-12 text-primary mx-auto mb-4" />
         <h3 className="text-2xl font-bold text-foreground mb-2">
-          Upload de Produtos
+          Contexto da IA
         </h3>
         <p className="text-muted-foreground">
-          Adicione imagens, catálogos ou planilhas dos seus produtos
+          Adicione materiais que ajudem nossa IA a entender sua solução
         </p>
       </div>
 
       <Card className="max-w-2xl mx-auto">
         <CardHeader>
-          <CardTitle>Documentos e Produtos</CardTitle>
+          <CardTitle>Materiais de Contexto</CardTitle>
           <CardDescription>
-            Aceitos: Imagens (JPG, PNG), PDFs e planilhas (CSV, Excel) até 5MB cada
+            Aceitos: PDFs, documentos de texto, planilhas e materiais explicativos até 5MB cada
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-6">
@@ -105,17 +105,17 @@ export const FileUpload = ({ onNext, onPrev }: FileUploadProps) => {
             ref={fileInputRef}
             type="file"
             multiple
-            accept="image/*,.pdf,.csv,.xlsx,.xls"
+            accept=".pdf,.txt,.csv,.xlsx,.xls,.md,.docx"
             onChange={(e) => handleFileSelect(e.target.files)}
             className="hidden"
           />
 
           {/* File List */}
-          {profile.products.length > 0 && (
+          {profile.contextFiles.length > 0 && (
             <div className="space-y-3">
-              <h4 className="font-semibold text-sm">Arquivos Adicionados ({profile.products.length})</h4>
+              <h4 className="font-semibold text-sm">Arquivos Adicionados ({profile.contextFiles.length})</h4>
               <div className="space-y-2">
-                {profile.products.map((file, index) => (
+                {profile.contextFiles.map((file, index) => (
                   <div
                     key={index}
                     className="flex items-center justify-between p-3 border rounded-lg bg-muted/30"
@@ -132,7 +132,7 @@ export const FileUpload = ({ onNext, onPrev }: FileUploadProps) => {
                     <Button
                       variant="ghost"
                       size="sm"
-                      onClick={() => removeProduct(index)}
+                      onClick={() => removeContextFile(index)}
                       className="text-destructive hover:text-destructive"
                     >
                       <Trash2 className="h-4 w-4" />
@@ -159,13 +159,13 @@ export const FileUpload = ({ onNext, onPrev }: FileUploadProps) => {
             <Button 
               onClick={onNext} 
               className="flex-1"
-              disabled={profile.products.length === 0}
+              disabled={profile.contextFiles.length === 0}
             >
               Continuar
             </Button>
           </div>
 
-          {profile.products.length === 0 && (
+          {profile.contextFiles.length === 0 && (
             <div className="text-center py-6">
               <p className="text-sm text-muted-foreground">
                 Nenhum arquivo adicionado ainda. Adicione pelo menos um arquivo para continuar.
