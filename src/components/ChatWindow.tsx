@@ -150,28 +150,7 @@ Esta é uma resposta simulada que demonstra como o chat funcionaria com integra�
   }
 
   return (
-    <div className="h-full flex flex-col bg-gradient-to-b from-background to-background/95">
-      {/* Header */}
-      <div className="flex-shrink-0 border-b border-border/20 bg-card/30 backdrop-blur-xl p-4 md:p-6">
-        <div className="flex items-center justify-between max-w-5xl mx-auto">
-          <div className="flex items-center gap-3">
-            <div className="w-8 h-8 md:w-10 md:h-10 rounded-xl md:rounded-2xl bg-gradient-to-br from-primary to-primary-glow flex items-center justify-center shadow-lg">
-              <Sparkles className="h-4 w-4 md:h-5 md:w-5 text-white" />
-            </div>
-            <div className="min-w-0">
-              <h2 className="font-bold text-foreground text-sm md:text-lg truncate">{currentSession.title}</h2>
-              <p className="text-xs md:text-sm text-muted-foreground">
-                {currentSession.messages.length} mensagem(s) • IA Adapta
-              </p>
-            </div>
-          </div>
-          <Button variant="outline" size="sm" className="rounded-xl shrink-0">
-            <RotateCcw className="h-3 w-3 md:h-4 md:w-4 mr-1 md:mr-2" />
-            <span className="hidden sm:inline">Nova</span>
-          </Button>
-        </div>
-      </div>
-
+    <div className="h-full flex flex-col bg-background">
       {/* Messages Container with proper scroll */}
       <div className="flex-1 overflow-hidden">
         <ScrollArea className="h-full">
@@ -179,7 +158,7 @@ Esta é uma resposta simulada que demonstra como o chat funcionaria com integra�
             <div className="space-y-6 md:space-y-8 max-w-4xl mx-auto pb-4">
               {currentSession.messages.length === 0 ? (
                 <div className="text-center py-12 md:py-20">
-                  <div className="w-16 h-16 md:w-20 md:h-20 rounded-2xl md:rounded-3xl bg-gradient-to-br from-primary/10 to-primary-glow/10 border border-primary/20 flex items-center justify-center mx-auto mb-6">
+                  <div className="w-16 h-16 md:w-20 md:h-20 rounded-xl bg-gradient-to-br from-primary/10 to-primary-glow/10 border border-primary/20 flex items-center justify-center mx-auto mb-6">
                     <Bot className="h-8 w-8 md:h-10 md:w-10 text-primary" />
                   </div>
                   <h3 className="text-xl md:text-2xl font-bold text-foreground mb-3">
@@ -191,13 +170,13 @@ Esta é uma resposta simulada que demonstra como o chat funcionaria com integra�
                   
                   {/* Welcome suggestions */}
                   <div className="flex flex-wrap gap-2 justify-center mt-8 max-w-lg mx-auto">
-                    <Button variant="outline" size="sm" className="text-xs rounded-full">
+                    <Button variant="outline" size="sm" className="text-xs rounded-lg">
                       💡 Estratégias de crescimento
                     </Button>
-                    <Button variant="outline" size="sm" className="text-xs rounded-full">
+                    <Button variant="outline" size="sm" className="text-xs rounded-lg">
                       🎯 Marketing digital
                     </Button>
-                    <Button variant="outline" size="sm" className="text-xs rounded-full">
+                    <Button variant="outline" size="sm" className="text-xs rounded-lg">
                       📊 Análise de dados
                     </Button>
                   </div>
@@ -228,8 +207,8 @@ Esta é uma resposta simulada que demonstra como o chat funcionaria com integra�
                         <div
                           className={`max-w-[85%] md:max-w-[75%] ${
                             message.role === 'user'
-                              ? 'bg-gradient-to-br from-primary to-primary-glow text-white rounded-2xl md:rounded-3xl rounded-br-md shadow-lg border border-primary/20'
-                              : 'bg-card/60 text-card-foreground rounded-2xl md:rounded-3xl rounded-bl-md border border-border/30 backdrop-blur-sm shadow-sm'
+                              ? 'bg-gradient-to-br from-primary to-primary-glow text-white rounded-lg shadow-lg border border-primary/20'
+                              : 'bg-card/60 text-card-foreground rounded-lg border border-border/30 backdrop-blur-sm shadow-sm'
                           } px-4 py-3 md:px-6 md:py-4`}
                         >
                           <div className="prose prose-sm md:prose-base max-w-none">
@@ -262,7 +241,7 @@ Esta é uma resposta simulada que demonstra como o chat funcionaria com integra�
                         </div>
 
                         {message.role === 'user' && (
-                          <Avatar className="h-8 w-8 md:h-10 md:w-10 flex-shrink-0 mt-1">
+                  <Avatar className="h-8 w-8 md:h-10 md:w-10 flex-shrink-0 mt-1">
                             <AvatarFallback className="bg-secondary/80 text-secondary-foreground border border-border/30">
                               <User className="h-4 w-4 md:h-5 md:w-5" />
                             </AvatarFallback>
@@ -291,7 +270,7 @@ Esta é uma resposta simulada que demonstra como o chat funcionaria com integra�
                       <Bot className="h-4 w-4 md:h-5 md:w-5" />
                     </AvatarFallback>
                   </Avatar>
-                  <div className="bg-card/60 rounded-2xl md:rounded-3xl rounded-bl-md border border-border/30 backdrop-blur-sm px-4 py-3 md:px-6 md:py-4 shadow-sm">
+                  <div className="bg-card/60 rounded-lg border border-border/30 backdrop-blur-sm px-4 py-3 md:px-6 md:py-4 shadow-sm">
                     <div className="flex items-center gap-3">
                       <div className="flex gap-1">
                         <div className="w-2 h-2 bg-primary rounded-full animate-bounce" style={{ animationDelay: '0ms' }}></div>
@@ -311,7 +290,7 @@ Esta é uma resposta simulada que demonstra como o chat funcionaria com integra�
       </div>
 
       {/* Input Area - Fixed at bottom */}
-      <div className="flex-shrink-0 border-t border-border/20 bg-card/30 backdrop-blur-xl p-4 md:p-6">
+      <div className="flex-shrink-0 border-t border-border/20 bg-background p-4 md:p-6">
         <div className="max-w-4xl mx-auto">
           <div className="flex gap-2 md:gap-4 items-end">
             <div className="flex-1 relative">
@@ -321,7 +300,7 @@ Esta é uma resposta simulada que demonstra como o chat funcionaria com integra�
                 onChange={(e) => setInputMessage(e.target.value)}
                 onKeyPress={handleKeyPress}
                 placeholder="Digite sua mensagem..."
-                className="min-h-[44px] md:min-h-[56px] max-h-24 md:max-h-32 resize-none pr-12 md:pr-16 rounded-xl md:rounded-2xl border-border/40 bg-background/70 backdrop-blur-sm focus:ring-2 focus:ring-primary/20 focus:border-primary/50 text-sm md:text-base"
+                className="min-h-[44px] md:min-h-[56px] max-h-24 md:max-h-32 resize-none pr-12 md:pr-16 rounded-lg border-border/40 bg-card/50 backdrop-blur-sm focus:ring-2 focus:ring-primary/20 focus:border-primary/50 text-sm md:text-base"
                 disabled={isLoading}
               />
               <div className="absolute bottom-2 md:bottom-3 right-3 md:right-4 text-xs text-muted-foreground">
@@ -331,7 +310,7 @@ Esta é uma resposta simulada que demonstra como o chat funcionaria com integra�
             <Button
               onClick={handleSendMessage}
               disabled={!inputMessage.trim() || isLoading}
-              className="w-11 h-11 md:w-14 md:h-14 rounded-xl md:rounded-2xl bg-gradient-to-r from-primary to-primary-glow hover:from-primary-glow hover:to-primary shadow-lg hover:shadow-xl transition-all duration-200 shrink-0"
+              className="w-11 h-11 md:w-14 md:h-14 rounded-lg bg-gradient-to-r from-primary to-primary-glow hover:from-primary-glow hover:to-primary shadow-lg hover:shadow-xl transition-all duration-200 shrink-0"
             >
               {isLoading ? (
                 <Loader2 className="h-4 w-4 md:h-5 md:w-5 animate-spin" />
@@ -344,13 +323,13 @@ Esta é uma resposta simulada que demonstra como o chat funcionaria com integra�
           {/* Quick suggestions - only on larger screens when no messages */}
           {currentSession.messages.length === 0 && (
             <div className="hidden md:flex flex-wrap gap-2 mt-4 justify-center">
-              <Button variant="outline" size="sm" className="text-xs rounded-full h-7 px-3">
+              <Button variant="outline" size="sm" className="text-xs rounded-lg h-7 px-3">
                 💡 Ideias para meu negócio
               </Button>
-              <Button variant="outline" size="sm" className="text-xs rounded-full h-7 px-3">
+              <Button variant="outline" size="sm" className="text-xs rounded-lg h-7 px-3">
                 🎯 Estratégias de marketing
               </Button>
-              <Button variant="outline" size="sm" className="text-xs rounded-full h-7 px-3">
+              <Button variant="outline" size="sm" className="text-xs rounded-lg h-7 px-3">
                 📊 Análise de mercado
               </Button>
             </div>

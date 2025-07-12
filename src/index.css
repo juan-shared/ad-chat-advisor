@@ -7,7 +7,7 @@
 @layer base {
   /* Dark Theme - Adapta Colors */
   :root {
-    --background: 150 23% 6%; /* #0C1413 */
+    --background: 44 44 47; /* #2C2C2F - ChatGPT style */
     --foreground: 150 15% 95%;
     --card: 150 20% 8%;
     --card-foreground: 150 15% 95%;

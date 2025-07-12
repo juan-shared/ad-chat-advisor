@@ -51,13 +51,13 @@ Esta recomendação foi gerada usando IA que analisa seu perfil, histórico de c
   return (
     <div className="mt-4 md:mt-6 space-y-3 md:space-y-4 animate-fade-in">
       <div className="flex items-center gap-2">
-        <div className="w-5 h-5 md:w-6 md:h-6 rounded-full bg-gradient-to-r from-primary to-primary-glow flex items-center justify-center">
+        <div className="w-5 h-5 md:w-6 md:h-6 rounded-lg bg-gradient-to-r from-primary to-primary-glow flex items-center justify-center">
           <Sparkles className="h-2.5 w-2.5 md:h-3 md:w-3 text-white" />
         </div>
         <span className="text-xs md:text-sm font-medium text-foreground">
           Recomendações baseadas na conversa
         </span>
-        <Badge variant="secondary" className="text-xs rounded-full px-2 h-5">
+        <Badge variant="secondary" className="text-xs rounded-lg px-2 h-5">
           {recommendations.length}
         </Badge>
       </div>
@@ -76,7 +76,7 @@ Esta recomendação foi gerada usando IA que analisa seu perfil, histórico de c
                     <img
                       src={recommendation.mediaUrl}
                       alt={recommendation.title}
-                      className="w-12 h-12 md:w-16 md:h-16 object-cover rounded-lg md:rounded-xl border border-border/30"
+                      className="w-12 h-12 md:w-16 md:h-16 object-cover rounded-lg border border-border/30"
                       onError={(e) => {
                         e.currentTarget.src = '/placeholder.svg';
                       }}
@@ -110,7 +110,7 @@ Esta recomendação foi gerada usando IA que analisa seu perfil, histórico de c
                   <div className="flex items-center gap-2 flex-wrap">
                     <Button 
                       size="sm" 
-                      className="h-6 md:h-7 text-xs px-2 md:px-3 rounded-lg md:rounded-xl bg-gradient-to-r from-primary to-primary-glow hover:from-primary-glow hover:to-primary"
+                      className="h-6 md:h-7 text-xs px-2 md:px-3 rounded-lg bg-gradient-to-r from-primary to-primary-glow hover:from-primary-glow hover:to-primary"
                     >
                       <ExternalLink className="h-3 w-3 mr-1" />
                       <span className="hidden sm:inline">{recommendation.cta}</span>
@@ -120,7 +120,7 @@ Esta recomendação foi gerada usando IA que analisa seu perfil, histórico de c
                       variant="ghost"
                       size="sm"
                       onClick={() => handleWhyRecommendation(recommendation)}
-                      className="h-6 md:h-7 text-xs px-2 md:px-3 rounded-lg md:rounded-xl"
+                      className="h-6 md:h-7 text-xs px-2 md:px-3 rounded-lg"
                     >
                       <HelpCircle className="h-3 w-3 mr-1" />
                       <span className="hidden md:inline">Por quê?</span>
