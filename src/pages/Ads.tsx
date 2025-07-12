@@ -16,6 +16,7 @@ import { SiteMapper } from "@/components/SiteMapper";
 import { ProfileSummary } from "@/components/ProfileSummary";
 import { VendorTypeSelector } from "@/components/VendorTypeSelector";
 import { AdPreview } from "@/components/AdPreview";
+import { AdCreator } from "@/components/AdCreator";
 import { Globe, Upload, Settings, CheckCircle, User } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 
@@ -40,9 +41,9 @@ const steps = [
   },
   {
     id: 3,
-    title: "Configuração",
+    title: "Anúncios",
     icon: Settings,
-    description: "Revise seu perfil",
+    description: "Crie seus anúncios",
   },
   {
     id: 4,
@@ -91,7 +92,7 @@ const Ads = () => {
         return <FileUpload onNext={handleNextStep} onPrev={handlePrevStep} />;
       case 3:
         return (
-          <ProfileSummary onNext={handleNextStep} onPrev={handlePrevStep} />
+          <AdCreator onNext={handleNextStep} onPrev={handlePrevStep} />
         );
       case 4:
         return (
