@@ -115,7 +115,7 @@ const Ads = () => {
                   <span className="text-primary-foreground font-bold text-xl">{currentStep + 1}</span>
                 </div>
                 <div>
-                  <h2 className="text-2xl font-bold bg-gradient-to-r from-primary to-primary-glow bg-clip-text text-transparent">
+                  <h2 className="text-2xl font-bold text-foreground">
                      {steps[currentStep]?.title}
                   </h2>
                     <p className="text-muted-foreground">{steps[currentStep]?.description}</p>
@@ -199,7 +199,7 @@ const Ads = () => {
           {/* Step Content */}
           <div className="p-8">
             <div className="grid lg:grid-cols-3 gap-8">
-              <div className="lg:col-span-2 min-h-[500px] bg-gradient-to-br from-card/30 to-card/50 rounded-3xl p-8 border border-border/30 backdrop-blur-sm">
+              <div className={`${currentStep === 0 ? 'lg:col-span-3' : 'lg:col-span-2'} min-h-[500px] bg-gradient-to-br from-card/30 to-card/50 rounded-3xl p-8 border border-border/30 backdrop-blur-sm`}>
                 {renderStepContent()}
               </div>
               
