@@ -44,17 +44,17 @@ export const VendorTypeSelector = ({ onNext }: VendorTypeSelectorProps) => {
   };
 
   return (
-    <div className="space-y-8">
+    <div className="w-full max-w-none space-y-8">
       <div className="text-center space-y-4">
         <h2 className="text-3xl font-bold text-foreground">
           Que tipo de anunciante você é?
         </h2>
-        <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+        <p className="text-lg text-muted-foreground max-w-3xl mx-auto">
           Escolha a categoria que melhor descreve seu negócio para personalizar sua experiência
         </p>
       </div>
 
-      <div className="grid md:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-8 w-full">
         {vendorTypes.map((vendor) => {
           const Icon = vendor.icon;
           const isSelected = profile.type === vendor.type;
@@ -62,33 +62,33 @@ export const VendorTypeSelector = ({ onNext }: VendorTypeSelectorProps) => {
           return (
             <Card 
               key={vendor.type}
-              className={`group cursor-pointer transition-all duration-300 hover:shadow-2xl hover:scale-105 ${
+              className={`group cursor-pointer transition-all duration-300 hover:shadow-lg hover:-translate-y-1 border-2 ${
                 isSelected 
-                  ? 'ring-2 ring-primary shadow-2xl scale-105' 
-                  : 'hover:ring-1 hover:ring-primary/50'
+                  ? 'border-primary bg-primary/5 shadow-lg -translate-y-1' 
+                  : 'border-border hover:border-primary/30'
               }`}
               onClick={() => handleSelect(vendor.type)}
             >
-              <CardHeader className="text-center space-y-4">
-                <div className={`w-20 h-20 mx-auto rounded-3xl bg-gradient-to-br ${vendor.gradient} flex items-center justify-center group-hover:scale-110 transition-transform duration-300`}>
-                  <Icon className="h-10 w-10 text-white" />
+              <CardHeader className="text-center space-y-6 pb-4">
+                <div className={`w-16 h-16 mx-auto rounded-2xl bg-muted flex items-center justify-center group-hover:bg-primary/10 transition-colors duration-300`}>
+                  <Icon className="h-8 w-8 text-primary" />
                 </div>
                 
-                <div className="space-y-2">
-                  <CardTitle className="text-2xl">{vendor.title}</CardTitle>
-                  <CardDescription className="text-base">
+                <div className="space-y-3">
+                  <CardTitle className="text-xl font-semibold">{vendor.title}</CardTitle>
+                  <CardDescription className="text-sm leading-relaxed">
                     {vendor.description}
                   </CardDescription>
                 </div>
               </CardHeader>
 
-              <CardContent className="space-y-6">
+              <CardContent className="space-y-4 pt-0">
                 <div className="flex flex-wrap gap-2 justify-center">
                   {vendor.examples.map((example) => (
                     <Badge 
                       key={example} 
                       variant="secondary" 
-                      className="rounded-2xl text-xs px-3 py-1"
+                      className="rounded-full text-xs px-3 py-1 bg-muted text-muted-foreground"
                     >
                       {example}
                     </Badge>
@@ -96,8 +96,9 @@ export const VendorTypeSelector = ({ onNext }: VendorTypeSelectorProps) => {
                 </div>
 
                 <Button 
-                  className="w-full rounded-2xl group-hover:scale-105 transition-transform duration-200"
+                  className="w-full rounded-xl font-medium"
                   variant={isSelected ? "default" : "outline"}
+                  size="lg"
                 >
                   {isSelected ? 'Selecionado' : 'Escolher'}
                   <ArrowRight className="ml-2 h-4 w-4" />
