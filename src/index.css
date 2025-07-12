@@ -7,25 +7,25 @@
 @layer base {
   /* Dark Theme - Adapta Colors */
   :root {
-    --background: 44 44 47; /* #2C2C2F - ChatGPT style */
+    --background: 240 4% 14%; /* #232326 - ChatGPT style */
     --foreground: 150 15% 95%;
-    --card: 150 20% 8%;
+    --card: 240 4% 16%;
     --card-foreground: 150 15% 95%;
-    --popover: 150 20% 8%;
+    --popover: 240 4% 16%;
     --popover-foreground: 150 15% 95%;
     --primary: 170 51% 33%; /* #277F72 */
     --primary-foreground: 0 0% 100%;
     --primary-glow: 166 52% 50%; /* #4BB6A2 */
-    --secondary: 150 25% 15%;
+    --secondary: 240 4% 18%;
     --secondary-foreground: 150 15% 90%;
-    --muted: 150 20% 12%;
+    --muted: 240 4% 20%;
     --muted-foreground: 150 10% 60%;
-    --accent: 150 25% 15%;
+    --accent: 240 4% 18%;
     --accent-foreground: 150 15% 90%;
     --destructive: 0 70% 55%;
     --destructive-foreground: 0 0% 100%;
-    --border: 150 20% 20%;
-    --input: 150 20% 20%;
+    --border: 240 4% 22%;
+    --input: 240 4% 22%;
     --ring: 170 51% 33%;
     
     /* Custom tokens */
@@ -43,13 +43,13 @@
     --shadow-glow: 0 0 40px hsl(var(--primary-glow) / 0.3);
     
     /* Sidebar */
-    --sidebar-background: 150 20% 8%;
+    --sidebar-background: 240 4% 14%;
     --sidebar-foreground: 150 15% 90%;
     --sidebar-primary: 170 51% 33%;
     --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 150 20% 12%;
+    --sidebar-accent: 240 4% 18%;
     --sidebar-accent-foreground: 150 15% 90%;
-    --sidebar-border: 150 20% 20%;
+    --sidebar-border: 240 4% 22%;
     --sidebar-ring: 170 51% 33%;
   }
 }
