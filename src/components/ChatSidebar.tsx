@@ -38,15 +38,10 @@ export const ChatSidebar = ({ onClose }: ChatSidebarProps) => {
     session.title.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
-  const formatDate = (date: Date) => {
-    const now = new Date();
-    const diff = now.getTime() - date.getTime();
-    const days = Math.floor(diff / (1000 * 60 * 60 * 24));
-    
-    if (days === 0) return 'Hoje';
-    if (days === 1) return 'Ontem';
-    if (days < 7) return `${days} dias atrás`;
-    return date.toLocaleDateString('pt-BR');
+  const getLastMessage = (session: any) => {
+    if (session.messages.length === 0) return 'Nova conversa';
+    const lastMessage = session.messages[session.messages.length - 1];
+    return lastMessage.content.substring(0, 60) + (lastMessage.content.length > 60 ? '...' : '');
   };
 
   const handleNewChat = () => {
@@ -112,29 +107,17 @@ export const ChatSidebar = ({ onClose }: ChatSidebarProps) => {
                   className={`group flex items-center justify-between p-3 rounded-lg cursor-pointer transition-colors ${
                     currentSession?.id === session.id
                       ? 'bg-primary/10 border border-primary/20'
-                      : 'hover:bg-muted/50'
+                      : 'hover:bg-muted/30'
                   }`}
                   onClick={() => handleSwitchSession(session.id)}
                 >
-                  <div className="flex-1 min-w-0">
-                    <div className="flex items-center justify-between mb-1">
-                      <h3 className="text-sm font-medium truncate">
-                        {session.title}
-                      </h3>
-                      {session.messages.length > 0 && (
-                        <Badge variant="secondary" className="text-xs ml-2">
-                          {session.messages.length}
-                        </Badge>
-                      )}
-                    </div>
-                    <p className="text-xs text-muted-foreground">
-                      {formatDate(session.updatedAt)}
+                  <div className="flex-1 min-w-0 space-y-1">
+                    <h3 className="text-sm font-medium text-foreground truncate">
+                      {session.title}
+                    </h3>
+                    <p className="text-xs text-muted-foreground truncate leading-relaxed">
+                      {getLastMessage(session)}
                     </p>
-                    {session.messages.length > 0 && (
-                      <p className="text-xs text-muted-foreground mt-1 truncate">
-                        {session.messages[session.messages.length - 1].content.substring(0, 50)}...
-                      </p>
-                    )}
                   </div>
 
                   <DropdownMenu>
@@ -142,10 +125,10 @@ export const ChatSidebar = ({ onClose }: ChatSidebarProps) => {
                       <Button
                         variant="ghost"
                         size="icon"
-                        className="opacity-0 group-hover:opacity-100 transition-opacity ml-2"
+                        className="opacity-0 group-hover:opacity-100 transition-opacity ml-2 h-6 w-6"
                         onClick={(e) => e.stopPropagation()}
                       >
-                        <MoreHorizontal className="h-4 w-4" />
+                        <MoreHorizontal className="h-3 w-3" />
                       </Button>
                     </DropdownMenuTrigger>
                     <DropdownMenuContent align="end">
