@@ -4,6 +4,7 @@ import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
+import { InlineRecommendations } from '@/components/InlineRecommendations';
 import { 
   Send, 
   Bot, 
@@ -12,7 +13,8 @@ import {
   Copy, 
   ThumbsUp, 
   ThumbsDown,
-  RotateCcw 
+  RotateCcw,
+  Sparkles 
 } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 
@@ -150,104 +152,136 @@ Esta é uma resposta simulada que demonstra como o chat funcionaria com integra�
   return (
     <div className="h-full flex flex-col">
       {/* Header */}
-      <div className="border-b bg-background/95 backdrop-blur-sm p-4">
-        <div className="flex items-center justify-between">
-          <div>
-            <h2 className="font-semibold text-foreground">{currentSession.title}</h2>
-            <p className="text-sm text-muted-foreground">
-              {currentSession.messages.length} mensagem(s)
-            </p>
+      <div className="border-b border-border/30 bg-card/30 backdrop-blur-md p-6">
+        <div className="flex items-center justify-between max-w-4xl mx-auto">
+          <div className="flex items-center gap-4">
+            <div className="w-10 h-10 rounded-2xl bg-gradient-to-br from-primary to-primary-glow flex items-center justify-center shadow-lg">
+              <Sparkles className="h-5 w-5 text-white" />
+            </div>
+            <div>
+              <h2 className="font-bold text-foreground text-lg">{currentSession.title}</h2>
+              <p className="text-sm text-muted-foreground">
+                {currentSession.messages.length} mensagem(s) • IA Adapta
+              </p>
+            </div>
           </div>
-          <Button variant="outline" size="sm">
+          <Button variant="outline" size="sm" className="rounded-xl">
             <RotateCcw className="h-4 w-4 mr-2" />
-            Limpar Chat
+            Nova Conversa
           </Button>
         </div>
       </div>
 
       {/* Messages */}
-      <ScrollArea className="flex-1 p-4">
-        <div className="space-y-6 max-w-4xl mx-auto">
+      <ScrollArea className="flex-1 p-6">
+        <div className="space-y-8 max-w-4xl mx-auto">
           {currentSession.messages.length === 0 ? (
-            <div className="text-center py-12">
-              <Bot className="h-12 w-12 text-primary mx-auto mb-4" />
-              <h3 className="text-lg font-semibold text-foreground mb-2">
+            <div className="text-center py-16">
+              <div className="w-20 h-20 rounded-3xl bg-gradient-to-br from-primary/20 to-primary-glow/20 flex items-center justify-center mx-auto mb-6">
+                <Bot className="h-10 w-10 text-primary" />
+              </div>
+              <h3 className="text-2xl font-bold text-foreground mb-3">
                 Como posso ajudar você hoje?
               </h3>
-              <p className="text-muted-foreground">
-                Digite sua pergunta ou descreva o que você está procurando
+              <p className="text-muted-foreground text-lg max-w-md mx-auto">
+                Digite sua pergunta ou descreva o que você está procurando. Nossa IA está pronta para ajudar!
               </p>
             </div>
           ) : (
-            currentSession.messages.map((message) => (
-              <div
-                key={message.id}
-                className={`flex gap-4 animate-fade-in ${
-                  message.role === 'user' ? 'justify-end' : 'justify-start'
-                }`}
-              >
-                {message.role === 'assistant' && (
-                  <Avatar className="h-8 w-8 flex-shrink-0">
-                    <AvatarFallback className="bg-primary text-primary-foreground">
-                      <Bot className="h-4 w-4" />
-                    </AvatarFallback>
-                  </Avatar>
-                )}
+            currentSession.messages.map((message, index) => {
+              const isLastAssistantMessage = 
+                message.role === 'assistant' && 
+                index === currentSession.messages.length - 1 &&
+                currentSession?.recommendations &&
+                currentSession.recommendations.length > 0;
 
-                <div
-                  className={`max-w-[80%] px-6 py-4 ${
-                    message.role === 'user'
-                      ? 'message-bubble-user'
-                      : 'message-bubble-assistant'
-                  }`}
-                >
-                  <div className="prose prose-sm max-w-none">
-                    <p className="whitespace-pre-wrap m-0">{message.content}</p>
+              return (
+                <div key={message.id} className="space-y-4">
+                  <div
+                    className={`flex gap-4 animate-fade-in ${
+                      message.role === 'user' ? 'justify-end' : 'justify-start'
+                    }`}
+                  >
+                    {message.role === 'assistant' && (
+                      <Avatar className="h-10 w-10 flex-shrink-0">
+                        <AvatarFallback className="bg-gradient-to-br from-primary to-primary-glow text-white">
+                          <Bot className="h-5 w-5" />
+                        </AvatarFallback>
+                      </Avatar>
+                    )}
+
+                    <div
+                      className={`max-w-[80%] px-6 py-4 ${
+                        message.role === 'user'
+                          ? 'bg-gradient-to-br from-primary to-primary-glow text-white rounded-3xl rounded-br-lg shadow-lg'
+                          : 'bg-card/50 text-card-foreground rounded-3xl rounded-bl-lg border border-border/50 backdrop-blur-sm'
+                      }`}
+                    >
+                      <div className="prose prose-sm max-w-none">
+                        <p className="whitespace-pre-wrap m-0 leading-relaxed">{message.content}</p>
+                      </div>
+
+                      {message.role === 'assistant' && message.content && (
+                        <div className="flex items-center gap-2 mt-4 pt-3 border-t border-border/30">
+                          <Button
+                            variant="ghost"
+                            size="sm"
+                            onClick={() => copyMessage(message.content)}
+                            className="h-7 px-3 text-xs rounded-xl hover:bg-muted/50"
+                          >
+                            <Copy className="h-3 w-3 mr-1" />
+                            Copiar
+                          </Button>
+                          <Button variant="ghost" size="sm" className="h-7 px-3 text-xs rounded-xl hover:bg-muted/50">
+                            <ThumbsUp className="h-3 w-3 mr-1" />
+                            Útil
+                          </Button>
+                          <Button variant="ghost" size="sm" className="h-7 px-3 text-xs rounded-xl hover:bg-muted/50">
+                            <ThumbsDown className="h-3 w-3 mr-1" />
+                            Melhorar
+                          </Button>
+                        </div>
+                      )}
+                    </div>
+
+                    {message.role === 'user' && (
+                      <Avatar className="h-10 w-10 flex-shrink-0">
+                        <AvatarFallback className="bg-secondary text-secondary-foreground">
+                          <User className="h-5 w-5" />
+                        </AvatarFallback>
+                      </Avatar>
+                    )}
                   </div>
 
-                  {message.role === 'assistant' && message.content && (
-                    <div className="flex items-center gap-2 mt-3 pt-2 border-t border-border/50">
-                      <Button
-                        variant="ghost"
-                        size="sm"
-                        onClick={() => copyMessage(message.content)}
-                        className="h-6 px-2 text-xs"
-                      >
-                        <Copy className="h-3 w-3 mr-1" />
-                        Copiar
-                      </Button>
-                      <Button variant="ghost" size="sm" className="h-6 px-2 text-xs">
-                        <ThumbsUp className="h-3 w-3" />
-                      </Button>
-                      <Button variant="ghost" size="sm" className="h-6 px-2 text-xs">
-                        <ThumbsDown className="h-3 w-3" />
-                      </Button>
+                  {/* Inline Recommendations after assistant message */}
+                  {isLastAssistantMessage && (
+                    <div className="ml-14">
+                      <InlineRecommendations 
+                        recommendations={currentSession.recommendations} 
+                        messageId={message.id}
+                      />
                     </div>
                   )}
                 </div>
-
-                {message.role === 'user' && (
-                  <Avatar className="h-8 w-8 flex-shrink-0">
-                    <AvatarFallback className="bg-secondary text-secondary-foreground">
-                      <User className="h-4 w-4" />
-                    </AvatarFallback>
-                  </Avatar>
-                )}
-              </div>
-            ))
+              );
+            })
           )}
           
           {isStreaming && (
             <div className="flex gap-4 justify-start">
-              <Avatar className="h-8 w-8 flex-shrink-0">
-                <AvatarFallback className="bg-primary text-primary-foreground">
-                  <Bot className="h-4 w-4" />
+              <Avatar className="h-10 w-10 flex-shrink-0">
+                <AvatarFallback className="bg-gradient-to-br from-primary to-primary-glow text-white">
+                  <Bot className="h-5 w-5" />
                 </AvatarFallback>
               </Avatar>
-              <div className="message-bubble-assistant">
-                <div className="flex items-center gap-2">
-                  <Loader2 className="h-4 w-4 animate-spin" />
-                  <span className="text-sm">Digitando...</span>
+              <div className="bg-card/50 rounded-3xl rounded-bl-lg border border-border/50 backdrop-blur-sm px-6 py-4">
+                <div className="flex items-center gap-3">
+                  <div className="flex gap-1">
+                    <div className="w-2 h-2 bg-primary rounded-full animate-bounce" style={{ animationDelay: '0ms' }}></div>
+                    <div className="w-2 h-2 bg-primary rounded-full animate-bounce" style={{ animationDelay: '150ms' }}></div>
+                    <div className="w-2 h-2 bg-primary rounded-full animate-bounce" style={{ animationDelay: '300ms' }}></div>
+                  </div>
+                  <span className="text-sm text-muted-foreground">IA está pensando...</span>
                 </div>
               </div>
             </div>
@@ -258,9 +292,9 @@ Esta é uma resposta simulada que demonstra como o chat funcionaria com integra�
       </ScrollArea>
 
       {/* Input */}
-      <div className="border-t bg-background/95 backdrop-blur-sm p-4">
+      <div className="border-t border-border/30 bg-card/30 backdrop-blur-md p-6">
         <div className="max-w-4xl mx-auto">
-          <div className="flex gap-3 items-end">
+          <div className="flex gap-4 items-end">
             <div className="flex-1 relative">
               <Textarea
                 ref={inputRef}
@@ -268,23 +302,36 @@ Esta é uma resposta simulada que demonstra como o chat funcionaria com integra�
                 onChange={(e) => setInputMessage(e.target.value)}
                 onKeyPress={handleKeyPress}
                 placeholder="Digite sua mensagem..."
-                className="min-h-[50px] max-h-32 resize-none pr-12"
+                className="min-h-[56px] max-h-32 resize-none pr-16 rounded-2xl border-border/50 bg-background/50 backdrop-blur-sm focus:ring-2 focus:ring-primary/20 focus:border-primary/50"
                 disabled={isLoading}
               />
-              <div className="absolute bottom-2 right-2 text-xs text-muted-foreground">
+              <div className="absolute bottom-3 right-4 text-xs text-muted-foreground">
                 {inputMessage.length}/2000
               </div>
             </div>
             <Button
               onClick={handleSendMessage}
               disabled={!inputMessage.trim() || isLoading}
-              className="gradient-primary"
+              className="w-14 h-14 rounded-2xl bg-gradient-to-r from-primary to-primary-glow hover:from-primary-glow hover:to-primary shadow-lg hover:shadow-xl transition-all duration-200"
             >
               {isLoading ? (
-                <Loader2 className="h-4 w-4 animate-spin" />
+                <Loader2 className="h-5 w-5 animate-spin" />
               ) : (
-                <Send className="h-4 w-4" />
+                <Send className="h-5 w-5" />
               )}
+            </Button>
+          </div>
+          
+          {/* Quick suggestions */}
+          <div className="flex flex-wrap gap-2 mt-4">
+            <Button variant="outline" size="sm" className="text-xs rounded-xl h-7">
+              💡 Ideias para meu negócio
+            </Button>
+            <Button variant="outline" size="sm" className="text-xs rounded-xl h-7">
+              🎯 Estratégias de marketing
+            </Button>
+            <Button variant="outline" size="sm" className="text-xs rounded-xl h-7">
+              📊 Análise de mercado
             </Button>
           </div>
         </div>

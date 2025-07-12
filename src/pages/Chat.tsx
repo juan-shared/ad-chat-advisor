@@ -54,11 +54,6 @@ const Chat = () => {
         <div className="flex-1 relative">
           <ChatWindow />
         </div>
-
-        {/* Recommendations Bar */}
-        <div className="border-t bg-background/95 backdrop-blur-sm">
-          <RecommendationsBar />
-        </div>
       </div>
     </div>
   );
