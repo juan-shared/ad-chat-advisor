@@ -57,7 +57,7 @@ Esta recomendação foi gerada usando IA que analisa seu perfil, histórico de c
       <div className="p-4 bg-background/95 backdrop-blur-sm">
         <ProductRecommendation 
           recommendations={recommendations.filter(rec => 
-            rec.image && rec.url && rec.primaryColor && rec.secondaryColor && rec.logo
+            rec.url && rec.primaryColor && rec.secondaryColor && rec.logo
           ).map(rec => ({
             image: rec.image!,
             url: rec.url!,
@@ -69,7 +69,7 @@ Esta recomendação foi gerada usando IA que analisa seu perfil, histórico de c
             companyName: rec.companyName,
             price: rec.price,
             rating: rec.rating,
-            type: 'product' as const
+            type: rec.type || 'product'
           }))}
         />
       </div>
