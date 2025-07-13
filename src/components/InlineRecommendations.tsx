@@ -66,21 +66,22 @@ Esta recomendação foi gerada usando IA que analisa seu perfil, histórico de c
             Recomendações
           </span>
         </div>
-        <div className="scale-90 origin-top-left -ml-4">
+        <div className="scale-90 origin-top-left -ml-2 px-2">
           <ProductRecommendation 
             recommendations={recommendations.filter(rec => 
-              rec.image && rec.url && rec.primaryColor && rec.secondaryColor && rec.logo
+              rec.url && rec.primaryColor && rec.secondaryColor
             ).map(rec => ({
-              image: rec.image!,
+              image: rec.image || '',
               url: rec.url!,
               primaryColor: rec.primaryColor!,
               secondaryColor: rec.secondaryColor!,
-              logo: rec.logo!,
+              logo: rec.logo || '',
               description: rec.description || rec.summary,
               title: rec.title,
               companyName: rec.companyName,
               price: rec.price,
-              rating: rec.rating
+              rating: rec.rating,
+              type: rec.type || 'product'
             }))} 
           />
         </div>

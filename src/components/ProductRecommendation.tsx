@@ -15,7 +15,8 @@ import {
   Crown,
   Star,
   ChevronLeft,
-  ChevronRight
+  ChevronRight,
+  User
 } from 'lucide-react';
 
 interface ProductRecommendation {
@@ -29,6 +30,7 @@ interface ProductRecommendation {
   companyName?: string;
   price?: string;
   rating?: number;
+  type: 'product' | 'service' | 'creator';
 }
 
 interface ProductRecommendationProps {
@@ -85,14 +87,14 @@ export const ProductRecommendation: React.FC<ProductRecommendationProps> = ({
     <div className="w-full max-w-6xl mx-auto p-4">
       <div className="mb-6">
         <h2 className="text-2xl font-bold text-foreground mb-2">
-          Produtos Recomendados
+          Recomendações Personalizadas
         </h2>
         <p className="text-muted-foreground">
-          Selecionamos estes produtos baseados nas suas preferências e necessidades
+          Selecionamos estas opções baseadas nas suas preferências e necessidades
         </p>
       </div>
 
-      <div className="relative">
+      <div className="relative ">
         <Carousel
           opts={{
             align: "start",
@@ -101,11 +103,11 @@ export const ProductRecommendation: React.FC<ProductRecommendationProps> = ({
           setApi={setApi}
           className="w-full"
         >
-          <CarouselContent className="-ml-2 md:-ml-4">
+          <CarouselContent className="-ml-2 md:-ml-4 px-3">
             {recommendations.map((product, index) => (
-              <CarouselItem key={index} className="pl-2 md:pl-4 basis-full sm:basis-1/2 lg:basis-1/3 xl:basis-1/4">
+              <CarouselItem key={index} className="pl-2 md:pl-4 basis-full sm:basis-1/2 lg:basis-2/5 xl:basis-1/3">
                 <Card 
-                  className="group relative border-2 transition-all duration-500 ease-out hover:scale-105 hover:shadow-2xl hover:z-50 cursor-pointer h-36 hover:h-auto overflow-hidden hover:overflow-visible"
+                  className="group relative border-2 border-b-0 rounded-md transition-all duration-500 ease-out hover:scale-102 hover:shadow-2xl hover:z-50 cursor-pointer h-36 hover:h-auto overflow-hidden hover:overflow-visible hover:mb-4"
                   style={{ 
                     borderColor: product.primaryColor + '20',
                     backgroundColor: product.secondaryColor + '05'
@@ -124,40 +126,115 @@ export const ProductRecommendation: React.FC<ProductRecommendationProps> = ({
                   </div>
                 )}
 
-                <CardContent className="p-0 h-full">
-                  {/* Product Image - Compact */}
-                  <div 
-                    className="relative h-20 group-hover:h-32 bg-gradient-to-br overflow-hidden transition-all duration-500 ease-out"
-                    style={{ 
-                      backgroundImage: `linear-gradient(135deg, ${product.primaryColor}20, ${product.secondaryColor}20)`
-                    }}
-                  >
-                    <img
-                      src={product.image}
-                      alt={product.title || 'Product'}
-                      className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
-                      onError={(e) => {
-                        e.currentTarget.src = '/placeholder.svg';
+                <CardContent className="p-0 h-full rounded-md overflow-hidden">
+                  {/* Different layouts based on type */}
+                  {product.type === 'service' ? (
+                    // SERVICE TYPE: Logo centered on gradient background
+                    <div 
+                      className="relative h-20 group-hover:h-24 bg-gradient-to-br flex flex-col items-center justify-center overflow-hidden transition-all duration-500 ease-out rounded-t-md"
+                      style={{ 
+                        backgroundImage: `linear-gradient(135deg, ${product.primaryColor}, ${product.secondaryColor})`
                       }}
-                    />
-                    
-                    {/* Company Logo - Bottom Right Corner */}
-                    <div className="absolute bottom-1 right-1">
-                      <div 
-                        className="w-6 h-6 group-hover:w-8 group-hover:h-8 rounded-full bg-white shadow-md flex items-center justify-center border transition-all duration-300"
-                        style={{ borderColor: product.primaryColor + '40' }}
-                      >
-                        <img
-                          src={product.logo}
-                          alt={product.companyName}
-                          className="w-3 h-3 group-hover:w-4 group-hover:h-4 object-contain transition-all duration-300"
-                          onError={(e) => {
-                            e.currentTarget.src = '/placeholder.svg';
-                          }}
-                        />
+                    >
+                      {/* Company Logo - Centered */}
+                      <div className="flex flex-col items-center justify-center space-y-1">
+                        <div 
+                          className="w-8 h-8 group-hover:w-12 group-hover:h-12 rounded-full bg-white/90 shadow-lg flex items-center justify-center border transition-all duration-300"
+                        >
+                          <img
+                            src={product.logo}
+                            alt={product.companyName}
+                            className="w-5 h-5 group-hover:w-7 group-hover:h-7 object-contain transition-all duration-300"
+                            onError={(e) => {
+                              e.currentTarget.src = '/placeholder.svg';
+                            }}
+                          />
+                        </div>
+                        {product.companyName && (
+                          <span className="text-white text-xs group-hover:text-sm font-semibold text-center shadow-sm transition-all duration-300">
+                            {product.companyName}
+                          </span>
+                        )}
                       </div>
                     </div>
-                  </div>
+                  ) : product.type === 'creator' ? (
+                    // CREATOR TYPE: Profile image/logo or user icon fallback
+                    <div 
+                      className="relative h-20 group-hover:h-24 bg-gradient-to-br flex flex-col items-center justify-center overflow-hidden transition-all duration-500 ease-out rounded-t-md"
+                      style={{ 
+                        backgroundImage: `linear-gradient(135deg, ${product.primaryColor}20, ${product.secondaryColor}20)`
+                      }}
+                    >
+                      <div className="flex flex-col items-center justify-center space-y-1">
+                        {/* Profile Image or Logo with User fallback */}
+                        <div className="relative">
+                          <div 
+                            className="w-10 h-10 group-hover:w-14 group-hover:h-14 rounded-full bg-white shadow-lg flex items-center justify-center border-2 transition-all duration-300"
+                            style={{ borderColor: product.primaryColor + '40' }}
+                          >
+                            {product.image || product.logo ? (
+                              <img
+                                src={product.image || product.logo}
+                                alt={product.companyName || 'Creator'}
+                                className="w-full h-full object-cover rounded-full transition-all duration-300"
+                                onError={(e) => {
+                                  // Fallback to user icon
+                                  const parent = e.currentTarget.parentElement;
+                                  if (parent) {
+                                    parent.innerHTML = `<svg class="w-6 h-6 group-hover:w-8 group-hover:h-8 text-muted-foreground transition-all duration-300" fill="currentColor" viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>`;
+                                  }
+                                }}
+                              />
+                            ) : (
+                              <User className="w-6 h-6 group-hover:w-8 group-hover:h-8 text-muted-foreground transition-all duration-300" />
+                            )}
+                          </div>
+                        </div>
+                        {product.companyName && (
+                          <span 
+                            className="text-xs group-hover:text-sm font-semibold text-center transition-all duration-300"
+                            style={{ color: product.primaryColor }}
+                          >
+                            {product.companyName}
+                          </span>
+                        )}
+                      </div>
+                    </div>
+                  ) : (
+                    // PRODUCT TYPE: Original product image layout
+                    <div 
+                      className="relative h-20 group-hover:h-24 bg-gradient-to-br overflow-hidden transition-all duration-500 ease-out rounded-t-md"
+                      style={{ 
+                        backgroundImage: `linear-gradient(135deg, ${product.primaryColor}20, ${product.secondaryColor}20)`
+                      }}
+                    >
+                      <img
+                        src={product.image}
+                        alt={product.title || 'Product'}
+                        className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                        onError={(e) => {
+                          e.currentTarget.src = '/placeholder.svg';
+                        }}
+                      />
+                      
+                      {/* Company Logo - Bottom Right Corner */}
+                      <div className="absolute bottom-1 right-1">
+                        <div 
+                          className="w-6 h-6 group-hover:w-8 group-hover:h-8 rounded-full bg-white shadow-md flex items-center justify-center border transition-all duration-300"
+                          style={{ borderColor: product.primaryColor + '40' }}
+                        >
+                          <img
+                            src={product.logo}
+                            alt={product.companyName}
+                            className="w-3 h-3 group-hover:w-4 group-hover:h-4 object-contain transition-all duration-300"
+                            onError={(e) => {
+                              e.currentTarget.src = '/placeholder.svg';
+                            }}
+                          />
+                        </div>
+                      </div>
+                    </div>
+                  )}
 
                   {/* Product Details - Compact */}
                   <div className="p-2 group-hover:p-3 transition-all duration-300">
@@ -182,12 +259,13 @@ export const ProductRecommendation: React.FC<ProductRecommendationProps> = ({
 
                     {/* Expandable content - Only on hover */}
                     <div className="opacity-0 group-hover:opacity-100 max-h-0 group-hover:max-h-96 overflow-hidden transition-all duration-500 ease-out space-y-2 mt-2">
-                      {/* Company Name & Rating */}
-                      <div className="space-y-1">                      {product.companyName && (
-                        <div className="flex items-center gap-1 text-xs text-muted-foreground">
-                          <span>{product.companyName}</span>
-                        </div>
-                      )}
+                      {/* Company Name & Rating - Only show company name for product type since service/creator already show it above */}
+                      <div className="space-y-1">
+                        {product.type === 'product' && product.companyName && (
+                          <div className="flex items-center gap-1 text-xs text-muted-foreground">
+                            <span>{product.companyName}</span>
+                          </div>
+                        )}
                         
                         {/* Rating */}
                         {product.rating && (
@@ -229,24 +307,28 @@ export const ProductRecommendation: React.FC<ProductRecommendationProps> = ({
                       )}
                     </div>
 
-                    {/* Action Button - Always visible */}
-                    <Button
-                      onClick={() => handleProductClick(product.url)}
-                      className="w-full text-white font-medium shadow-md hover:shadow-lg transition-all duration-200 mt-2 h-7 text-xs"
-                      style={{ 
-                        backgroundColor: product.primaryColor,
-                        '--hover-bg': product.secondaryColor 
-                      } as React.CSSProperties}
-                      onMouseEnter={(e) => {
-                        e.currentTarget.style.backgroundColor = product.secondaryColor;
-                      }}
-                      onMouseLeave={(e) => {
-                        e.currentTarget.style.backgroundColor = product.primaryColor;
-                      }}
-                    >
-                      <ExternalLink className="h-2.5 w-2.5 mr-1" />
-                      Ver Produto
-                    </Button>
+                    {/* Action Button - Only visible on hover */}
+                    <div className="opacity-0 group-hover:opacity-100 max-h-0 group-hover:max-h-12 overflow-hidden transition-all duration-300">
+                      <Button
+                        onClick={() => handleProductClick(product.url)}
+                        className="w-full text-white font-medium shadow-md hover:shadow-lg transition-all duration-200 mt-2 h-7 text-xs"
+                        style={{ 
+                          backgroundColor: product.primaryColor,
+                          '--hover-bg': product.secondaryColor 
+                        } as React.CSSProperties}
+                        onMouseEnter={(e) => {
+                          e.currentTarget.style.backgroundColor = product.secondaryColor;
+                        }}
+                        onMouseLeave={(e) => {
+                          e.currentTarget.style.backgroundColor = product.primaryColor;
+                        }}
+                      >
+                        <ExternalLink className="h-2.5 w-2.5 mr-1" />
+                        {product.type === 'service' ? 'Ver Serviço' : 
+                         product.type === 'creator' ? 'Ver Perfil' : 
+                         'Ver Produto'}
+                      </Button>
+                    </div>
                   </div>
                 </CardContent>
               </Card>
