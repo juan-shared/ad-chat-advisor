@@ -108,9 +108,9 @@ export const ProductRecommendation: React.FC<ProductRecommendationProps> = ({
           setApi={setApi}
           className="w-full"
         >
-          <CarouselContent className="-ml-2 md:-ml-4 px-3">
+          <CarouselContent className="-ml-2 md:-ml-4 px-3 pb-8">
             {topRecommendations.map((product, index) => (
-              <CarouselItem key={index} className="pl-2 md:pl-4 basis-full sm:basis-1/2 lg:basis-2/5 xl:basis-1/3">
+              <CarouselItem key={index} className="pl-2 md:pl-4 basis-full sm:basis-1/2 lg:basis-2/5 xl:basis-1/3 pb-4">
                 <Card 
                   className="group relative border-2 border-b-0 rounded-md transition-all duration-500 ease-out hover:scale-102 hover:shadow-2xl hover:z-50 cursor-pointer h-36 hover:h-auto overflow-hidden hover:overflow-visible hover:mb-4"
                   style={{ 
