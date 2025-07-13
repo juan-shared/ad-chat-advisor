@@ -61,8 +61,7 @@ const Index = () => {
             </div>
             
             <p className="text-base md:text-lg text-muted-foreground max-w-2xl mx-auto leading-relaxed">
-              A nova infraestrutura que conecta pessoas a produtos através de 
-              <span className="font-semibold text-foreground"> IA conversacional inteligente</span>
+              Conectamos pessoas a conteúdos, produtos e serviços transformando qualquer interação de IA em um canal de recomendações personalizadas e monetizadas.
             </p>
             
             <div className="flex flex-col sm:flex-row gap-4 justify-center pt-6">
