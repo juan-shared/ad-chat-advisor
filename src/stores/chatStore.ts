@@ -1,9 +1,10 @@
-import { create } from 'zustand';
+import { create } from "zustand";
+import { ChatHistoryResponse } from "@/lib/api";
 
 export interface ChatMessage {
   id: string;
   content: string;
-  role: 'user' | 'assistant';
+  role: "user" | "assistant";
   timestamp: Date;
   recommendations?: Recommendation[];
 }
@@ -29,6 +30,7 @@ export interface Recommendation {
 
 export interface ChatSession {
   id: string;
+  sessionId: string; // Unique session identifier for API requests
   title: string;
   messages: ChatMessage[];
   recommendations: Recommendation[];
@@ -42,22 +44,28 @@ interface ChatStore {
   isLoading: boolean;
   isStreaming: boolean;
   error: string | null;
-  
+  userId: string | null;
+
   // Actions
   createSession: (title?: string) => void;
   switchSession: (sessionId: string) => void;
-  addMessage: (content: string, role: 'user' | 'assistant') => void;
+  addMessage: (content: string, role: "user" | "assistant") => void;
   updateLastMessage: (content: string) => void;
   setRecommendations: (recommendations: Recommendation[]) => void;
-  setMessageRecommendations: (messageId: string, recommendations: Recommendation[]) => void;
+  setMessageRecommendations: (
+    messageId: string,
+    recommendations: Recommendation[]
+  ) => void;
   setLoading: (loading: boolean) => void;
   setStreaming: (streaming: boolean) => void;
   setError: (error: string | null) => void;
   clearChat: () => void;
   deleteSession: (sessionId: string) => void;
+  setUserId: (userId: string) => void;
+  loadChatHistory: (chatHistory: ChatHistoryResponse[]) => void;
 }
 
-const generateId = () => Math.random().toString(36).substr(2, 9);
+const generateId = () => crypto.randomUUID();
 
 export const useChatStore = create<ChatStore>((set, get) => ({
   currentSession: null,
@@ -65,25 +73,27 @@ export const useChatStore = create<ChatStore>((set, get) => ({
   isLoading: false,
   isStreaming: false,
   error: null,
+  userId: null,
 
-  createSession: (title = 'Nova Conversa') => {
+  createSession: (title = "Nova Conversa") => {
     const session: ChatSession = {
       id: generateId(),
+      sessionId: generateId(), // Generate a unique sessionId for API requests
       title,
       messages: [],
       recommendations: [],
       createdAt: new Date(),
       updatedAt: new Date(),
     };
-    
-    set(state => ({
+
+    set((state) => ({
       currentSession: session,
-      sessions: [session, ...state.sessions]
+      sessions: [session, ...state.sessions],
     }));
   },
 
   switchSession: (sessionId) => {
-    const session = get().sessions.find(s => s.id === sessionId);
+    const session = get().sessions.find((s) => s.id === sessionId);
     if (session) {
       set({ currentSession: session });
     }
@@ -97,7 +107,7 @@ export const useChatStore = create<ChatStore>((set, get) => ({
       timestamp: new Date(),
     };
 
-    set(state => {
+    set((state) => {
       if (!state.currentSession) return state;
 
       const updatedSession = {
@@ -108,7 +118,7 @@ export const useChatStore = create<ChatStore>((set, get) => ({
 
       return {
         currentSession: updatedSession,
-        sessions: state.sessions.map(s => 
+        sessions: state.sessions.map((s) =>
           s.id === updatedSession.id ? updatedSession : s
         ),
       };
@@ -116,15 +126,15 @@ export const useChatStore = create<ChatStore>((set, get) => ({
   },
 
   updateLastMessage: (content) => {
-    set(state => {
+    set((state) => {
       if (!state.currentSession || state.currentSession.messages.length === 0) {
         return state;
       }
 
       const messages = [...state.currentSession.messages];
       const lastMessage = messages[messages.length - 1];
-      
-      if (lastMessage.role === 'assistant') {
+
+      if (lastMessage.role === "assistant") {
         lastMessage.content = content;
       }
 
@@ -136,7 +146,7 @@ export const useChatStore = create<ChatStore>((set, get) => ({
 
       return {
         currentSession: updatedSession,
-        sessions: state.sessions.map(s => 
+        sessions: state.sessions.map((s) =>
           s.id === updatedSession.id ? updatedSession : s
         ),
       };
@@ -144,7 +154,7 @@ export const useChatStore = create<ChatStore>((set, get) => ({
   },
 
   setRecommendations: (recommendations) => {
-    set(state => {
+    set((state) => {
       if (!state.currentSession) return state;
 
       const updatedSession = {
@@ -155,7 +165,7 @@ export const useChatStore = create<ChatStore>((set, get) => ({
 
       return {
         currentSession: updatedSession,
-        sessions: state.sessions.map(s => 
+        sessions: state.sessions.map((s) =>
           s.id === updatedSession.id ? updatedSession : s
         ),
       };
@@ -163,13 +173,11 @@ export const useChatStore = create<ChatStore>((set, get) => ({
   },
 
   setMessageRecommendations: (messageId, recommendations) => {
-    set(state => {
+    set((state) => {
       if (!state.currentSession) return state;
 
-      const messages = state.currentSession.messages.map(msg => 
-        msg.id === messageId 
-          ? { ...msg, recommendations }
-          : msg
+      const messages = state.currentSession.messages.map((msg) =>
+        msg.id === messageId ? { ...msg, recommendations } : msg
       );
 
       const updatedSession = {
@@ -180,7 +188,7 @@ export const useChatStore = create<ChatStore>((set, get) => ({
 
       return {
         currentSession: updatedSession,
-        sessions: state.sessions.map(s => 
+        sessions: state.sessions.map((s) =>
           s.id === updatedSession.id ? updatedSession : s
         ),
       };
@@ -194,7 +202,7 @@ export const useChatStore = create<ChatStore>((set, get) => ({
   setError: (error) => set({ error }),
 
   clearChat: () => {
-    set(state => {
+    set((state) => {
       if (!state.currentSession) return state;
 
       const clearedSession = {
@@ -206,7 +214,7 @@ export const useChatStore = create<ChatStore>((set, get) => ({
 
       return {
         currentSession: clearedSession,
-        sessions: state.sessions.map(s => 
+        sessions: state.sessions.map((s) =>
           s.id === clearedSession.id ? clearedSession : s
         ),
       };
@@ -214,9 +222,43 @@ export const useChatStore = create<ChatStore>((set, get) => ({
   },
 
   deleteSession: (sessionId) => {
-    set(state => ({
-      sessions: state.sessions.filter(s => s.id !== sessionId),
-      currentSession: state.currentSession?.id === sessionId ? null : state.currentSession,
+    set((state) => ({
+      sessions: state.sessions.filter((s) => s.id !== sessionId),
+      currentSession:
+        state.currentSession?.id === sessionId ? null : state.currentSession,
     }));
+  },
+
+  setUserId: (userId) => {
+    set({ userId });
+  },
+
+  loadChatHistory: (chatHistory) => {
+    // Validate that chatHistory is an array
+    if (!Array.isArray(chatHistory)) {
+      console.warn(
+        "loadChatHistory: chatHistory is not an array:",
+        chatHistory
+      );
+      return;
+    }
+
+    const sessions: ChatSession[] = chatHistory.map((thread) => ({
+      id: thread.id,
+      sessionId: thread.sessionId, // Use sessionId from API response
+      title: thread.title,
+      messages:
+        thread.messages?.map((msg) => ({
+          id: msg.id,
+          content: msg.content,
+          role: msg.role,
+          timestamp: new Date(msg.timestamp),
+        })) || [],
+      recommendations: [],
+      createdAt: new Date(thread.createdAt),
+      updatedAt: new Date(thread.updatedAt),
+    }));
+
+    set({ sessions });
   },
 }));

@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useSearchParams, useNavigate } from "react-router-dom";
 import { useChatStore } from "@/stores/chatStore";
 import { ChatSidebar } from "@/components/ChatSidebar";
 import { ChatWindow } from "@/components/ChatWindow";
@@ -7,16 +8,39 @@ import { Button } from "@/components/ui/button";
 import { Menu } from "lucide-react";
 
 const Chat = () => {
-  const { currentSession, createSession } = useChatStore();
+  const { currentSession, createSession, switchSession, sessions } =
+    useChatStore();
   const [sidebarOpen, setSidebarOpen] = useState(true);
+  const [searchParams, setSearchParams] = useSearchParams();
+  const navigate = useNavigate();
   const userId = Math.random().toString(36).substring(2, 15);
 
+  // Get sessionId from URL
+  const urlSessionId = searchParams.get("session_id");
+
   useEffect(() => {
-    // Create a default session if none exists
-    if (!currentSession) {
+    if (urlSessionId) {
+      // Try to find and switch to the session from URL
+      const existingSession = sessions.find(
+        (s) => s.sessionId === urlSessionId
+      );
+      if (existingSession && currentSession?.sessionId !== urlSessionId) {
+        switchSession(existingSession.id);
+      }
+    } else if (!currentSession) {
+      // Create a default session if none exists and no URL sessionId
       createSession("Primeira Conversa");
     }
-  }, [currentSession, createSession]);
+  }, [urlSessionId, currentSession, createSession, switchSession, sessions]);
+
+  // Update URL when current session changes
+  useEffect(() => {
+    if (currentSession?.sessionId) {
+      const newSearchParams = new URLSearchParams(searchParams);
+      newSearchParams.set("session_id", currentSession.sessionId);
+      setSearchParams(newSearchParams, { replace: true });
+    }
+  }, [currentSession?.sessionId, searchParams, setSearchParams]);
 
   return (
     <div className="h-screen flex bg-background overflow-hidden">
