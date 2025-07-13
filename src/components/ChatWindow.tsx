@@ -406,23 +406,6 @@ Esta é uma resposta simulada que demonstra como o chat funcionaria com integra�
           )}
         </div>
       </div>
-      
-      {/* Floating Action Button - Bottom Right Corner */}
-      <div className="fixed bottom-6 right-6 z-50">
-        <Button
-          size="icon"
-          className="w-12 h-12 rounded-full bg-gradient-to-r from-primary to-primary-glow hover:from-primary-glow hover:to-primary shadow-lg hover:shadow-xl transition-all duration-200 group"
-          onClick={() => {
-            // You can add any action here - help, settings, etc.
-            toast({
-              title: 'Adapta AI Assistant',
-              description: 'Como posso ajudar você hoje?',
-            });
-          }}
-        >
-          <Sparkles className="h-5 w-5 text-white group-hover:scale-110 transition-transform duration-200" />
-        </Button>
-      </div>
     </div>
   );
 };
