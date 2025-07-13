@@ -20,7 +20,7 @@ import {
 } from 'lucide-react';
 
 interface ProductRecommendation {
-  image: string;
+  image_url: string;
   url: string;
   primaryColor: string;
   secondaryColor: string;
@@ -172,9 +172,9 @@ export const ProductRecommendation: React.FC<ProductRecommendationProps> = ({
                             className="w-10 h-10 group-hover:w-14 group-hover:h-14 rounded-full bg-white shadow-lg flex items-center justify-center border-2 transition-all duration-300"
                             style={{ borderColor: product.primaryColor + '40' }}
                           >
-                            {product.image || product.logo ? (
+                            {product.image_url || product.logo ? (
                               <img
-                                src={product.image || product.logo}
+                                src={product.image_url || product.logo}
                                 alt={product.companyName || 'Creator'}
                                 className="w-full h-full object-cover rounded-full transition-all duration-300"
                                 onError={(e) => {
@@ -209,7 +209,7 @@ export const ProductRecommendation: React.FC<ProductRecommendationProps> = ({
                       }}
                     >
                       <img
-                        src={product.image}
+                        src={product.image_url}
                         alt={product.title || 'Product'}
                         className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
                         onError={(e) => {

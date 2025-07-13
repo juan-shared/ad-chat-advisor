@@ -21,7 +21,7 @@ export const InlineRecommendations = ({ recommendations, messageId }: InlineReco
 
   // Check if we have product recommendations (new format)
   const hasProductRecommendations = recommendations.some((rec: Recommendation) => 
-    rec.image && rec.url && rec.primaryColor && rec.secondaryColor && rec.logo
+    rec.url
   );
 
   const handleWhyRecommendation = (recommendation: Recommendation) => {
@@ -69,12 +69,12 @@ Esta recomendação foi gerada usando IA que analisa seu perfil, histórico de c
         <div className="scale-90 origin-top-left -ml-2 px-2">
           <ProductRecommendation 
             recommendations={recommendations.filter(rec => 
-              rec.url && rec.primaryColor && rec.secondaryColor
+              rec.url
             ).map(rec => ({
-              image: rec.image || '',
+              image_url: rec.image || '',
               url: rec.url!,
-              primaryColor: rec.primaryColor!,
-              secondaryColor: rec.secondaryColor!,
+              primaryColor: rec.primaryColor! || '#297f71',
+              secondaryColor: rec.secondaryColor! || '#f3f4f6',
               logo: rec.logo || '',
               description: rec.description || rec.summary,
               title: rec.title,
