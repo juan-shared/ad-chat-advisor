@@ -43,7 +43,7 @@ const Chat = () => {
   }, [currentSession?.sessionId, searchParams, setSearchParams]);
 
   return (
-    <div className="h-screen flex bg-background overflow-hidden">
+    <div className="h-screen flex bg-background overflow-hidden pt-16">
       {/* Mobile sidebar toggle */}
       <div className="lg:hidden fixed top-4 left-4 z-50">
         <Button

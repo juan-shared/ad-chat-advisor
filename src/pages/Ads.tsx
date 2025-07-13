@@ -107,7 +107,7 @@ const Solutions = () => {
   };
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-background pt-16">
       {/* Hero Section */}
       <div className="relative overflow-hidden bg-gradient-to-br from-background via-background to-muted/20">
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,hsl(var(--primary)/0.1),transparent_70%)]" />

@@ -68,8 +68,9 @@ Esta recomendação foi gerada usando IA que analisa seu perfil, histórico de c
             title: rec.title,
             companyName: rec.companyName,
             price: rec.price,
-            rating: rec.rating
-          }))} 
+            rating: rec.rating,
+            type: 'product' as const
+          }))}
         />
       </div>
     );

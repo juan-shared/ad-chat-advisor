@@ -4,6 +4,7 @@ export interface SiteData {
   title: string;
   description: string;
   images: string[];
+  solutionOwnerId?: string;
 }
 
 export type VendorType = 'creator' | 'produto' | 'solucao';
