@@ -1,7 +1,8 @@
-import { useChatStore } from '@/stores/chatStore';
+import { useChatStore, Recommendation } from '@/stores/chatStore';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
+import { ProductRecommendation } from './ProductRecommendation';
 import { 
   Sparkles, 
   ExternalLink, 
@@ -11,14 +12,19 @@ import {
 } from 'lucide-react';
 
 interface InlineRecommendationsProps {
-  recommendations: any[];
+  recommendations: Recommendation[];
   messageId: string;
 }
 
 export const InlineRecommendations = ({ recommendations, messageId }: InlineRecommendationsProps) => {
   const { addMessage } = useChatStore();
 
-  const handleWhyRecommendation = (recommendation: any) => {
+  // Check if we have product recommendations (new format)
+  const hasProductRecommendations = recommendations.some((rec: Recommendation) => 
+    rec.image && rec.url && rec.primaryColor && rec.secondaryColor && rec.logo
+  );
+
+  const handleWhyRecommendation = (recommendation: Recommendation) => {
     const whyMessage = `Por que você recomenda "${recommendation.title}"?`;
     addMessage(whyMessage, 'user');
     
@@ -46,6 +52,40 @@ Esta recomendação foi gerada usando IA que analisa seu perfil, histórico de c
 
   if (recommendations.length === 0) {
     return null;
+  }
+
+  // If we have product recommendations, use the new component in compact mode
+  if (hasProductRecommendations) {
+    return (
+      <div className="mt-4 md:mt-6 animate-fade-in">
+        <div className="flex items-center gap-2 mb-3">
+          <div className="w-4 h-4 rounded-md bg-gradient-to-r from-primary to-primary-glow flex items-center justify-center">
+            <Sparkles className="h-2.5 w-2.5 text-white" />
+          </div>
+          <span className="text-xs font-medium text-muted-foreground">
+            Recomendações
+          </span>
+        </div>
+        <div className="scale-90 origin-top-left -ml-4">
+          <ProductRecommendation 
+            recommendations={recommendations.filter(rec => 
+              rec.image && rec.url && rec.primaryColor && rec.secondaryColor && rec.logo
+            ).map(rec => ({
+              image: rec.image!,
+              url: rec.url!,
+              primaryColor: rec.primaryColor!,
+              secondaryColor: rec.secondaryColor!,
+              logo: rec.logo!,
+              description: rec.description || rec.summary,
+              title: rec.title,
+              companyName: rec.companyName,
+              price: rec.price,
+              rating: rec.rating
+            }))} 
+          />
+        </div>
+      </div>
+    );
   }
 
   return (

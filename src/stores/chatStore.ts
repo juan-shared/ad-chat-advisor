@@ -5,6 +5,7 @@ export interface ChatMessage {
   content: string;
   role: 'user' | 'assistant';
   timestamp: Date;
+  recommendations?: Recommendation[];
 }
 
 export interface Recommendation {
@@ -14,6 +15,16 @@ export interface Recommendation {
   mediaUrl?: string;
   cta: string;
   relevanceScore?: number;
+  // New product recommendation fields
+  image?: string;
+  url?: string;
+  primaryColor?: string;
+  secondaryColor?: string;
+  logo?: string;
+  description?: string;
+  companyName?: string;
+  price?: string;
+  rating?: number;
 }
 
 export interface ChatSession {
@@ -38,6 +49,7 @@ interface ChatStore {
   addMessage: (content: string, role: 'user' | 'assistant') => void;
   updateLastMessage: (content: string) => void;
   setRecommendations: (recommendations: Recommendation[]) => void;
+  setMessageRecommendations: (messageId: string, recommendations: Recommendation[]) => void;
   setLoading: (loading: boolean) => void;
   setStreaming: (streaming: boolean) => void;
   setError: (error: string | null) => void;
@@ -138,6 +150,31 @@ export const useChatStore = create<ChatStore>((set, get) => ({
       const updatedSession = {
         ...state.currentSession,
         recommendations,
+        updatedAt: new Date(),
+      };
+
+      return {
+        currentSession: updatedSession,
+        sessions: state.sessions.map(s => 
+          s.id === updatedSession.id ? updatedSession : s
+        ),
+      };
+    });
+  },
+
+  setMessageRecommendations: (messageId, recommendations) => {
+    set(state => {
+      if (!state.currentSession) return state;
+
+      const messages = state.currentSession.messages.map(msg => 
+        msg.id === messageId 
+          ? { ...msg, recommendations }
+          : msg
+      );
+
+      const updatedSession = {
+        ...state.currentSession,
+        messages,
         updatedAt: new Date(),
       };
 

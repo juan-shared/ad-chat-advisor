@@ -25,7 +25,7 @@ export const ChatWindow = () => {
     updateLastMessage, 
     setLoading, 
     setStreaming, 
-    setRecommendations,
+    setMessageRecommendations,
     isLoading,
     isStreaming 
   } = useChatStore();
@@ -77,31 +77,104 @@ Esta é uma resposta simulada que demonstra como o chat funcionaria com integra�
         const mockRecommendations = [
           {
             id: '1',
-            title: 'Solução CRM Personalizada',
+            title: 'HubSpot CRM Pro',
             summary: 'Sistema de gestão de clientes adaptado para suas necessidades específicas.',
-            mediaUrl: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=200',
+            description: 'Plataforma completa de CRM que automatiza vendas, marketing e atendimento ao cliente. Ideal para empresas que buscam crescimento escalável.',
+            mediaUrl: 'https://images.unsplash.com/photo-1611224923853-80b023f02d71?w=600&h=400&fit=crop&crop=entropy&auto=format&q=80',
+            image: 'https://images.unsplash.com/photo-1611224923853-80b023f02d71?w=600&h=400&fit=crop&crop=entropy&auto=format&q=80',
+            url: 'https://hubspot.com?ref=adapta',
+            primaryColor: '#ff7a59',
+            secondaryColor: '#ff9777',
+            logo: 'https://www.hubspot.com/hubfs/HubSpot_Logos/HubSpot-Inversed-Favicon.png',
+            companyName: 'HubSpot',
+            price: 'A partir de R$ 299/mês',
+            rating: 5,
             cta: 'Saiba Mais',
             relevanceScore: 0.95
           },
           {
             id: '2',
-            title: 'Automação de Marketing',
+            title: 'Mailchimp Pro',
             summary: 'Plataforma completa para automatizar suas campanhas de marketing digital.',
-            mediaUrl: 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=200',
+            description: 'Ferramenta de email marketing e automação que ajuda a criar campanhas personalizadas e analisar resultados em tempo real.',
+            mediaUrl: 'https://images.unsplash.com/photo-1563013544-824ae1b704d3?w=600&h=400&fit=crop&crop=entropy&auto=format&q=80',
+            image: 'https://images.unsplash.com/photo-1563013544-824ae1b704d3?w=600&h=400&fit=crop&crop=entropy&auto=format&q=80',
+            url: 'https://mailchimp.com?ref=adapta',
+            primaryColor: '#ffe01b',
+            secondaryColor: '#ffed4e',
+            logo: 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABwAAAAcCAMAAABF0y+mAAAAjVBMVEX/4Bv/4hv/5Rv/5hv11xukjxiLeRfkyBr/6BuXhBhfURbKsRnu0RtZTBbDqxk9MxUdFRVFOhbbwBpTRxb/6ht3ZxcAABUSChUiGhVnWRfpzBokHBVOQhY3LhWymxm4oRkWDRVzYxeEcxd+bRcaEhULABWplBjUuhqJeBe+phn/7BuZhhhgUhZtXhcpIBVVb8UJAAABLklEQVR4AbXSV2KEIBAAUAdYHXsfa+zdbO5/vPC3tt8dKzw6KN8PYBzkB56Mi5eqcY4K3hhQN0zLdlTX84OLghI6ESoxJV6aZHgxP+eRQxR6aZGo/GSstBiqP0FVx27aCDhi1AYs6tJ+GMdhoAmPBqaOvKJUAlE5l+yIvASwqCg8WwgLccnhUDHQedQ3RUE5R8bCl4YHdNYtIE+imJcZ16Dc2QfFb7c4pSfnsM35nCtbVX+UBd36zkdZNeAAwLCd4dBuJVbhpkO7CUVoU792x3bDTcuLlEztPb1qK1L6w4CZE9ZxU9CsxbVpORW8j4vERCXnmexbXlWrFQX2eZGiXioFGyLKeWlwOQYZpQX1q1kZZPLbbld/NJKMULuaDAbztO91jvB4woBxziR9N/4BL1MY48JVNNAAAAAASUVORK5CYII=',
+            companyName: 'Mailchimp',
+            price: 'A partir de R$ 59/mês',
+            rating: 4,
             cta: 'Ver Demonstração',
             relevanceScore: 0.88
           },
           {
             id: '3',
-            title: 'Análise de Dados Avançada',
+            title: 'Tableau Analytics',
             summary: 'Dashboard inteligente para insights em tempo real do seu negócio.',
-            mediaUrl: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=200',
+            description: 'Plataforma de análise de dados e visualização que transforma dados complexos em insights acionáveis para tomada de decisão.',
+            mediaUrl: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=600&h=400&fit=crop&crop=entropy&auto=format&q=80',
+            image: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=600&h=400&fit=crop&crop=entropy&auto=format&q=80',
+            url: 'https://tableau.com?ref=adapta',
+            primaryColor: '#1f77b4',
+            secondaryColor: '#5ca3d6',
+            logo: 'https://logos-world.net/wp-content/uploads/2021/10/Tableau-Symbol.png',
+            companyName: 'Tableau',
+            price: 'A partir de R$ 189/mês',
+            rating: 4,
             cta: 'Experimentar Grátis',
             relevanceScore: 0.82
+          },
+          {
+            id: '4',
+            title: 'RD Station CRM',
+            summary: 'Solução brasileira completa de marketing e vendas.',
+            description: 'CRM nacional com foco em inbound marketing, automação de campanhas e gestão completa do funil de vendas.',
+            mediaUrl: 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=600&h=400&fit=crop&crop=entropy&auto=format&q=80',
+            image: 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=600&h=400&fit=crop&crop=entropy&auto=format&q=80',
+            url: 'https://rdstation.com/crm/?ref=adapta',
+            primaryColor: '#7b2cbf',
+            secondaryColor: '#9c4dcc',
+            logo: 'https://resultadosdigitais.com.br/wp-content/uploads/2021/03/RD_Station_Logo.svg',
+            companyName: 'RD Station',
+            price: 'R$ 39/mês',
+            rating: 5,
+            cta: 'Teste Gratuito',
+            relevanceScore: 0.90
+          },
+          {
+            id: '5',
+            title: 'Zoho CRM Plus',
+            summary: 'Suite completa de produtividade e CRM.',
+            description: 'Plataforma all-in-one com CRM, automação de marketing, helpdesk e ferramentas de colaboração integradas.',
+            mediaUrl: 'https://images.unsplash.com/photo-1542744173-8e7e53415bb0?w=600&h=400&fit=crop&crop=entropy&auto=format&q=80',
+            image: 'https://images.unsplash.com/photo-1542744173-8e7e53415bb0?w=600&h=400&fit=crop&crop=entropy&auto=format&q=80',
+            url: 'https://zoho.com/crm/?ref=adapta',
+            primaryColor: '#e74c3c',
+            secondaryColor: '#f39c12',
+            logo: 'https://www.zohowebstatic.com/sites/default/files/zoho_general_pages/Header/zoho-logo.svg',
+            companyName: 'Zoho',
+            price: 'R$ 85/mês',
+            rating: 4,
+            cta: 'Saiba Mais',
+            relevanceScore: 0.79
           }
         ];
         
-        setRecommendations(mockRecommendations);
+        // Get the current session and find the last assistant message
+        const currentState = useChatStore.getState();
+        const currentSessionState = currentState.currentSession;
+        
+        if (currentSessionState) {
+          const lastAssistantMessage = currentSessionState.messages
+            .filter(msg => msg.role === 'assistant')
+            .pop();
+          
+          if (lastAssistantMessage) {
+            setMessageRecommendations(lastAssistantMessage.id, mockRecommendations);
+          }
+        }
       }, 1000);
 
     } catch (error) {
@@ -150,7 +223,7 @@ Esta é uma resposta simulada que demonstra como o chat funcionaria com integra�
   }
 
   return (
-    <div className="h-full flex flex-col bg-background">
+    <div className="h-full flex flex-col bg-background relative">
       {/* Messages Container with proper scroll */}
       <div className="flex-1 overflow-hidden">
         <ScrollArea className="h-full">
@@ -183,11 +256,7 @@ Esta é uma resposta simulada que demonstra como o chat funcionaria com integra�
                 </div>
               ) : (
                 currentSession.messages.map((message, index) => {
-                  const isLastAssistantMessage = 
-                    message.role === 'assistant' && 
-                    index === currentSession.messages.length - 1 &&
-                    currentSession?.recommendations &&
-                    currentSession.recommendations.length > 0;
+                  const hasRecommendations = message.recommendations && message.recommendations.length > 0;
 
                   return (
                     <div key={message.id} className="space-y-4">
@@ -228,10 +297,10 @@ Esta é uma resposta simulada que demonstra como o chat funcionaria com integra�
                       </div>
 
                       {/* Inline Recommendations after assistant message */}
-                      {isLastAssistantMessage && (
+                      {hasRecommendations && (
                         <div className="ml-11 md:ml-14 mr-0 md:mr-14">
                           <InlineRecommendations 
-                            recommendations={currentSession.recommendations} 
+                            recommendations={message.recommendations!} 
                             messageId={message.id}
                           />
                         </div>
@@ -313,6 +382,23 @@ Esta é uma resposta simulada que demonstra como o chat funcionaria com integra�
             </div>
           )}
         </div>
+      </div>
+      
+      {/* Floating Action Button - Bottom Right Corner */}
+      <div className="fixed bottom-6 right-6 z-50">
+        <Button
+          size="icon"
+          className="w-12 h-12 rounded-full bg-gradient-to-r from-primary to-primary-glow hover:from-primary-glow hover:to-primary shadow-lg hover:shadow-xl transition-all duration-200 group"
+          onClick={() => {
+            // You can add any action here - help, settings, etc.
+            toast({
+              title: 'Adapta AI Assistant',
+              description: 'Como posso ajudar você hoje?',
+            });
+          }}
+        >
+          <Sparkles className="h-5 w-5 text-white group-hover:scale-110 transition-transform duration-200" />
+        </Button>
       </div>
     </div>
   );

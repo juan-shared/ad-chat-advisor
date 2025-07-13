@@ -1,8 +1,9 @@
-import { useChatStore } from '@/stores/chatStore';
+import { useChatStore, Recommendation } from '@/stores/chatStore';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { ScrollArea } from '@/components/ui/scroll-area';
+import { ProductRecommendation } from './ProductRecommendation';
 import { 
   Sparkles, 
   ExternalLink, 
@@ -14,8 +15,13 @@ import {
 export const RecommendationsBar = () => {
   const { currentSession, addMessage } = useChatStore();
   const recommendations = currentSession?.recommendations || [];
+  
+  // Check if we have product recommendations (new format)
+  const hasProductRecommendations = recommendations.some((rec: Recommendation) => 
+    rec.image && rec.url && rec.primaryColor && rec.secondaryColor && rec.logo
+  );
 
-  const handleWhyRecommendation = (recommendation: any) => {
+  const handleWhyRecommendation = (recommendation: Recommendation) => {
     const whyMessage = `Por que você recomenda "${recommendation.title}"?`;
     addMessage(whyMessage, 'user');
     
@@ -43,6 +49,30 @@ Esta recomendação foi gerada usando IA que analisa seu perfil, histórico de c
 
   if (recommendations.length === 0) {
     return null;
+  }
+
+  // If we have product recommendations, use the new component
+  if (hasProductRecommendations) {
+    return (
+      <div className="p-4 bg-background/95 backdrop-blur-sm">
+        <ProductRecommendation 
+          recommendations={recommendations.filter(rec => 
+            rec.image && rec.url && rec.primaryColor && rec.secondaryColor && rec.logo
+          ).map(rec => ({
+            image: rec.image!,
+            url: rec.url!,
+            primaryColor: rec.primaryColor!,
+            secondaryColor: rec.secondaryColor!,
+            logo: rec.logo!,
+            description: rec.description || rec.summary,
+            title: rec.title,
+            companyName: rec.companyName,
+            price: rec.price,
+            rating: rec.rating
+          }))} 
+        />
+      </div>
+    );
   }
 
   return (
