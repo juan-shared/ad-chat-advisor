@@ -45,9 +45,12 @@ export const ChatWindow = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   };
 
-  useEffect(() => {
-    scrollToBottom();
-  }, [currentSession?.messages]);  const handleSendMessage = async () => {
+  // Remove automatic scrolling on new messages
+  // useEffect(() => {
+  //   scrollToBottom();
+  // }, [currentSession?.messages]);
+
+  const handleSendMessage = async () => {
     if (!inputMessage.trim() || isLoading) return;
 
     const userMessage = inputMessage.trim();
@@ -93,8 +96,88 @@ export const ChatWindow = () => {
         throw new Error('Formato de resposta inválido');
       }
 
-      // Handle recommendations if provided by the API
-      if (data.recommendations && data.recommendations.length > 0) {
+      // Mock product recommendations for testing
+      const mockRecommendations = [
+        {
+          id: '1',
+          title: 'HubSpot CRM Pro',
+          summary: 'Sistema de gestão de clientes adaptado para suas necessidades específicas.',
+          description: 'Plataforma completa de CRM que automatiza vendas, marketing e atendimento ao cliente. Ideal para empresas que buscam crescimento escalável.',
+          mediaUrl: 'https://images.unsplash.com/photo-1611224923853-80b023f02d71?w=600&h=400&fit=crop&crop=entropy&auto=format&q=80',
+          image: 'https://images.unsplash.com/photo-1611224923853-80b023f02d71?w=600&h=400&fit=crop&crop=entropy&auto=format&q=80',
+          url: 'https://hubspot.com?ref=adapta',
+          primaryColor: '#ff7a59',
+          secondaryColor: '#ff9777',
+          logo: 'https://www.hubspot.com/hubfs/HubSpot_Logos/HubSpot-Inversed-Favicon.png',
+          companyName: 'HubSpot',
+          price: 'A partir de R$ 299/mês',
+          rating: 5,
+          cta: 'Saiba Mais',
+          relevanceScore: 0.95,
+          type: 'product' as const
+        },
+        {
+          id: '2',
+          title: 'Consultoria em Marketing Digital',
+          summary: 'Serviços especializados em estratégia e implementação de marketing digital.',
+          description: 'Consultoria completa em marketing digital com foco em crescimento sustentável. Desenvolvemos estratégias personalizadas para cada negócio.',
+          mediaUrl: '',
+          image: '',
+          url: 'https://agenciadigital.com?ref=adapta',
+          primaryColor: '#4f46e5',
+          secondaryColor: '#7c3aed',
+          logo: 'https://images.unsplash.com/photo-1549921296-3b0d24789407?w=100&h=100&fit=crop&crop=entropy&auto=format&q=80',
+          companyName: 'Agência Digital Pro',
+          price: 'A partir de R$ 2.500/projeto',
+          rating: 5,
+          cta: 'Ver Serviço',
+          relevanceScore: 0.92,
+          type: 'service' as const
+        },
+        {
+          id: '3',
+          title: 'Ana Silva - Growth Hacker',
+          summary: 'Especialista em crescimento de startups e estratégias de growth hacking.',
+          description: 'Growth hacker com mais de 8 anos de experiência ajudando startups a escalar. Especializada em aquisição de usuários e otimização de conversão.',
+          mediaUrl: 'https://images.unsplash.com/photo-1494790108755-2616b612b2bc?w=400&h=400&fit=crop&crop=face&auto=format&q=80',
+          image: 'https://images.unsplash.com/photo-1494790108755-2616b612b2bc?w=400&h=400&fit=crop&crop=face&auto=format&q=80',
+          url: 'https://anasilva.com?ref=adapta',
+          primaryColor: '#ec4899',
+          secondaryColor: '#f472b6',
+          logo: '',
+          companyName: 'Ana Silva',
+          price: 'R$ 180/hora',
+          rating: 5,
+          cta: 'Ver Perfil',
+          relevanceScore: 0.88,
+          type: 'creator' as const
+        },
+        {
+          id: '4',
+          title: 'Slack Business+',
+          summary: 'Plataforma de comunicação empresarial para equipes produtivas.',
+          description: 'Transforme a comunicação da sua equipe com Slack Business+. Recursos avançados de produtividade, integrações e segurança empresarial.',
+          mediaUrl: 'https://images.unsplash.com/photo-1611224923853-80b023f02d71?w=600&h=400&fit=crop&crop=entropy&auto=format&q=80',
+          image: 'https://images.unsplash.com/photo-1611224923853-80b023f02d71?w=600&h=400&fit=crop&crop=entropy&auto=format&q=80',
+          url: 'https://slack.com?ref=adapta',
+          primaryColor: '#4A154B',
+          secondaryColor: '#611f69',
+          logo: 'https://a.slack-edge.com/80588/marketing/img/meta/slack_hash_256.png',
+          companyName: 'Slack',
+          price: 'A partir de R$ 45/mês por usuário',
+          rating: 4,
+          cta: 'Experimentar Grátis',
+          relevanceScore: 0.85,
+          type: 'product' as const
+        }
+      ];
+
+      // Handle recommendations (use mock data for testing, or real data if provided)
+      const recommendationsToUse = data.recommendations && data.recommendations.length > 0 
+        ? data.recommendations 
+        : mockRecommendations;
+
+      if (recommendationsToUse.length > 0) {
         // Get the current session state after adding the message
         setTimeout(() => {
           const currentState = useChatStore.getState();
@@ -106,7 +189,7 @@ export const ChatWindow = () => {
               .pop();
             
             if (lastAssistantMessage) {
-              setMessageRecommendations(lastAssistantMessage.id, data.recommendations!);
+              setMessageRecommendations(lastAssistantMessage.id, recommendationsToUse);
             }
           }
         }, 100); // Small delay to ensure the message has been added
@@ -167,7 +250,7 @@ export const ChatWindow = () => {
       <div className="flex-1 overflow-hidden">
         <ScrollArea className="h-full">
           <div className="p-4 md:p-6">
-            <div className="space-y-6 md:space-y-8 max-w-4xl mx-auto pb-4">
+            <div className="space-y-6 md:space-y-8 max-w-4xl mx-auto pb-60">
               {currentSession.messages.length === 0 ? (
                 <div className="text-center py-12 md:py-20">
                   <div className="w-16 h-16 md:w-20 md:h-20 rounded-xl bg-gradient-to-br from-primary/10 to-primary-glow/10 border border-primary/20 flex items-center justify-center mx-auto mb-6">
