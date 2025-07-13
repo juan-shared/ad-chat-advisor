@@ -25,6 +25,7 @@ export interface Recommendation {
   companyName?: string;
   price?: string;
   rating?: number;
+  type?: 'product' | 'service' | 'creator';
 }
 
 export interface ChatSession {
