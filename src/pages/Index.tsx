@@ -101,8 +101,8 @@ const Index = () => {
               <p className="text-sm text-muted-foreground">Crescimento anual em IA conversacional</p>
             </div>
             <div className="space-y-2">
-              <div className="text-3xl font-bold text-destructive">-30%</div>
-              <p className="text-sm text-muted-foreground">Queda nos cliques do Google</p>
+              <div className="text-3xl font-bold text-primary">30%+</div>
+              <p className="text-sm text-muted-foreground">Migração para conversas inteligentes</p>
             </div>
             <div className="space-y-2">
               <div className="text-3xl font-bold text-primary">$1T+</div>
@@ -117,28 +117,27 @@ const Index = () => {
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
             <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-6">
-              <span className="text-muted-foreground">Aonde está a</span>{" "}
+              <span className="text-foreground">A atenção migrou para a</span>{" "}
               <span className="bg-gradient-to-r from-primary via-primary to-primary/70 bg-clip-text text-transparent">
-                ATENÇÃO
-              </span>{" "}
-              <span className="text-muted-foreground">hoje?</span>
+                INTELIGÊNCIA ARTIFICIAL
+              </span>
             </h2>
             <div className="w-16 h-0.5 bg-gradient-to-r from-primary to-primary/70 mx-auto rounded-full mb-6" />
             <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-              A resposta vai te surpreender
+              E nós estamos onde ela está
             </p>
           </div>
           
           <div className="grid md:grid-cols-3 gap-6 mb-12">
             {[
-              { icon: Search, title: "Busca Tradicional", desc: "Perdendo relevância e cliques constantemente" },
-              { icon: Megaphone, title: "Anúncios Gritam", desc: "Mas ninguém escuta no meio do ruído digital" },
-              { icon: Eye, title: "Feed com Ruído", desc: "Mais ruído do que informação real" }
+              { icon: Brain, title: "IA Conversacional", desc: "Onde as decisões de compra acontecem hoje" },
+              { icon: Target, title: "Match Inteligente", desc: "Conectamos oferta e demanda com precisão" },
+              { icon: Sparkles, title: "Recomendações Naturais", desc: "Experiência fluida e transparente" }
             ].map((item, index) => (
               <div key={index} className="group relative">
-                <div className="absolute -inset-0.5 bg-gradient-to-r from-destructive/20 to-destructive/10 rounded-2xl blur opacity-0 group-hover:opacity-100 transition duration-1000 group-hover:duration-200" />
-                <div className="relative overflow-hidden rounded-2xl bg-card/80 backdrop-blur-sm border border-border/50 p-6 hover:border-destructive/30 transition-all duration-500">
-                  <item.icon className="h-10 w-10 text-destructive mb-4 group-hover:scale-110 transition-transform" />
+                <div className="absolute -inset-0.5 bg-gradient-to-r from-primary/20 to-primary/10 rounded-2xl blur opacity-0 group-hover:opacity-100 transition duration-1000 group-hover:duration-200" />
+                <div className="relative overflow-hidden rounded-2xl bg-card/80 backdrop-blur-sm border border-border/50 p-6 hover:border-primary/30 transition-all duration-500">
+                  <item.icon className="h-10 w-10 text-primary mb-4 group-hover:scale-110 transition-transform" />
                   <h3 className="text-lg font-semibold mb-2">{item.title}</h3>
                   <p className="text-sm text-muted-foreground">{item.desc}</p>
                 </div>
@@ -147,11 +146,11 @@ const Index = () => {
           </div>
           
           <div className="text-center">
-            <h3 className="text-3xl md:text-4xl font-bold text-destructive mb-4">
-              NÃO ESTÁ MAIS NO GOOGLE!
+            <h3 className="text-3xl md:text-4xl font-bold text-primary mb-4">
+              É AQUI QUE ACONTECE O FUTURO!
             </h3>
             <p className="text-muted-foreground">
-              O mercado de +1 trilhão de dólares está se fragmentando
+              Transformamos cada conversa em uma oportunidade de conexão inteligente
             </p>
           </div>
         </div>
