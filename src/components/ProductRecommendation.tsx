@@ -121,7 +121,7 @@ export const ProductRecommendation: React.FC<ProductRecommendationProps> = ({
                       style={{ backgroundColor: product.primaryColor }}
                     >
                       <Crown className="h-2.5 w-2.5 mr-1" />
-                      Best
+                      Melhor
                     </Badge>
                   </div>
                 )}
