@@ -11,7 +11,7 @@ export const API_CONFIG = {
   // Request timeouts (in milliseconds)
   timeouts: {
     default: parseInt(import.meta.env.VITE_API_TIMEOUT || '30000'),
-    streaming: parseInt(import.meta.env.VITE_STREAMING_TIMEOUT || '60000'),
+    streaming: parseInt(import.meta.env.VITE_STREAMING_TIMEOUT || '120000'),
   },
   
   // Retry configuration

@@ -325,21 +325,6 @@ export const ChatWindow = () => {
               )}
             </Button>
           </div>
-          
-          {/* Quick suggestions - only on larger screens when no messages */}
-          {currentSession.messages.length === 0 && (
-            <div className="hidden md:flex flex-wrap gap-2 mt-4 justify-center">
-              <Button variant="outline" size="sm" className="text-xs rounded-lg h-7 px-3">
-                💡 Ideias para meu negócio
-              </Button>
-              <Button variant="outline" size="sm" className="text-xs rounded-lg h-7 px-3">
-                🎯 Estratégias de marketing
-              </Button>
-              <Button variant="outline" size="sm" className="text-xs rounded-lg h-7 px-3">
-                📊 Análise de mercado
-              </Button>
-            </div>
-          )}
         </div>
       </div>
     </div>

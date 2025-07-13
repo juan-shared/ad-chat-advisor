@@ -329,13 +329,6 @@ export const ChatSidebar = ({ onClose }: ChatSidebarProps) => {
           )}
         </div>
       </ScrollArea>
-
-      {/* Footer */}
-      <div className="p-4 border-t">
-        <div className="text-center">
-          <p className="text-xs text-muted-foreground">Powered by Adapta AI</p>
-        </div>
-      </div>
     </div>
   );
 };
