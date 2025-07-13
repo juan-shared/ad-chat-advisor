@@ -46,7 +46,7 @@ export const ChatSidebar = ({ onClose }: ChatSidebarProps) => {
   // For demo purposes, set a default userId
   useEffect(() => {
     if (!userId) {
-      setUserId("46697dae-7c7f-4a6e-92cf-543aa05a34ab");
+      setUserId("7fa96146-e076-4b4b-93e3-510674a4e468");
     }
   }, [userId, setUserId]);
 
