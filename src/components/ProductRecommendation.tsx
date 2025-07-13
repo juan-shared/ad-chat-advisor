@@ -73,6 +73,9 @@ export const ProductRecommendation: React.FC<ProductRecommendationProps> = ({
     return null;
   }
 
+  // Only show top 3 recommendations
+  const topRecommendations = recommendations.slice(0, 3);
+
   const handleProductClick = (url: string) => {
     window.open(url, '_blank', 'noopener,noreferrer');
   };
@@ -106,7 +109,7 @@ export const ProductRecommendation: React.FC<ProductRecommendationProps> = ({
           className="w-full"
         >
           <CarouselContent className="-ml-2 md:-ml-4 px-3">
-            {recommendations.map((product, index) => (
+            {topRecommendations.map((product, index) => (
               <CarouselItem key={index} className="pl-2 md:pl-4 basis-full sm:basis-1/2 lg:basis-2/5 xl:basis-1/3">
                 <Card 
                   className="group relative border-2 border-b-0 rounded-md transition-all duration-500 ease-out hover:scale-102 hover:shadow-2xl hover:z-50 cursor-pointer h-36 hover:h-auto overflow-hidden hover:overflow-visible hover:mb-4"
@@ -354,7 +357,7 @@ export const ProductRecommendation: React.FC<ProductRecommendationProps> = ({
         </Carousel>
         
         {/* Fixed position navigation arrows - positioned relative to the initial 36 height */}
-        {recommendations.length > 1 && (
+        {topRecommendations.length > 1 && (
           <>
             {canScrollPrev && (
               <Button
@@ -381,7 +384,7 @@ export const ProductRecommendation: React.FC<ProductRecommendationProps> = ({
       </div>
       
       {/* Mobile scroll indicator */}
-      {recommendations.length > 1 && (
+      {topRecommendations.length > 1 && (
         <div className="flex justify-center mt-4 sm:hidden">
           <p className="text-xs text-muted-foreground">
             ← Deslize para ver mais produtos →
