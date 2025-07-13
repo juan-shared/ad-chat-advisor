@@ -1,19 +1,20 @@
-import { useEffect, useState } from 'react';
-import { useChatStore } from '@/stores/chatStore';
-import { ChatSidebar } from '@/components/ChatSidebar';
-import { ChatWindow } from '@/components/ChatWindow';
-import { RecommendationsBar } from '@/components/RecommendationsBar';
-import { Button } from '@/components/ui/button';
-import { Menu } from 'lucide-react';
+import { useEffect, useState } from "react";
+import { useChatStore } from "@/stores/chatStore";
+import { ChatSidebar } from "@/components/ChatSidebar";
+import { ChatWindow } from "@/components/ChatWindow";
+import { RecommendationsBar } from "@/components/RecommendationsBar";
+import { Button } from "@/components/ui/button";
+import { Menu } from "lucide-react";
 
 const Chat = () => {
   const { currentSession, createSession } = useChatStore();
   const [sidebarOpen, setSidebarOpen] = useState(true);
+  const userId = Math.random().toString(36).substring(2, 15);
 
   useEffect(() => {
     // Create a default session if none exists
     if (!currentSession) {
-      createSession('Primeira Conversa');
+      createSession("Primeira Conversa");
     }
   }, [currentSession, createSession]);
 
@@ -34,7 +35,7 @@ const Chat = () => {
       {/* Sidebar */}
       <div
         className={`${
-          sidebarOpen ? 'translate-x-0' : '-translate-x-full'
+          sidebarOpen ? "translate-x-0" : "-translate-x-full"
         } fixed lg:relative lg:translate-x-0 w-80 h-full transition-transform duration-300 ease-in-out z-40`}
       >
         <ChatSidebar onClose={() => setSidebarOpen(false)} />
