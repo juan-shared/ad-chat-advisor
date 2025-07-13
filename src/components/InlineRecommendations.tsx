@@ -74,7 +74,7 @@ Esta recomendação foi gerada usando IA que analisa seu perfil, histórico de c
               image_url: rec.image_url || '',
               url: rec.url!,
               primaryColor: rec.primaryColor! || '#297f71',
-              secondaryColor: rec.secondaryColor! || '#f3f4f6',
+              secondaryColor: rec.secondaryColor! || '#339f8e',
               logo: rec.logo || '',
               description: rec.description || rec.summary,
               title: rec.title,
