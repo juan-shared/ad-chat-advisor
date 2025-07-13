@@ -17,7 +17,7 @@ import { ProfileSummary } from "@/components/ProfileSummary";
 
 import { SolutionPreview } from "@/components/SolutionPreview";
 import { SolutionCreator } from "@/components/SolutionCreator";
-import { Globe, Upload, Settings, CheckCircle } from "lucide-react";
+import { Globe, Upload, Settings, CheckCircle, Plus } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 
 const steps = [
@@ -93,10 +93,19 @@ const Solutions = () => {
             </div>
             <div className="flex gap-4 justify-center">
               <Button
-                className="gradient-primary"
-                onClick={() => setCurrentStep(0)}
+                className="gradient-primary flex items-center gap-2"
+                onClick={() => setCurrentStep(1)}
               >
-                Registrar Nova Solução
+                <Plus className="h-4 w-4" />
+                Criar Outra Solução
+              </Button>
+              <Button
+                variant="outline"
+                onClick={() => setCurrentStep(0)}
+                className="flex items-center gap-2"
+              >
+                <Globe className="h-4 w-4" />
+                Novo Projeto
               </Button>
             </div>
           </div>
@@ -119,7 +128,7 @@ const Solutions = () => {
                 Solução Inteligente
               </span>
             </h1>
-            <p className="text-xl mb-8 text-muted-foreground mb-8 max-w-4xl mx-auto leading-relaxed">
+            <p className="text-xl text-muted-foreground mb-8 max-w-4xl mx-auto leading-relaxed">
               Registre sua solução em nosso sistema para que possamos conectá-la
               aos usuários certos no momento perfeito através de IA
             </p>

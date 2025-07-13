@@ -13,6 +13,13 @@ import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogDescription,
+} from "@/components/ui/dialog";
+import {
   Settings,
   Users,
   Target,
@@ -55,6 +62,7 @@ export const SolutionCreator = ({ onNext, onPrev }: SolutionCreatorProps) => {
     productType: "service",
   });
   const [newCategory, setNewCategory] = useState("");
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
   const { toast } = useToast();
 
   const addCategory = () => {
@@ -88,41 +96,41 @@ export const SolutionCreator = ({ onNext, onPrev }: SolutionCreatorProps) => {
     ) {
       toast({
         title: "Campos obrigatórios",
-        description: "Preencha título, descrição e tipo de produto da solução.",
+        description: "Por favor, preencha todos os campos obrigatórios.",
         variant: "destructive",
       });
       return;
     }
 
     const newSolution: Solution = {
-      id: Date.now().toString(),
+      id: Math.random().toString(36).substr(2, 9),
       title: currentSolution.title,
       description: currentSolution.description,
       categories: currentSolution.categories || [],
-      url: currentSolution.url || profile.url || "",
+      url: currentSolution.url || "",
       image_url: currentSolution.image_url || "",
-      productType: currentSolution.productType as
-        | "product"
-        | "service"
-        | "creator",
+      productType: currentSolution.productType!,
       isRegistered: false,
       isRegistering: false,
     };
 
     setSolutions([...solutions, newSolution]);
+
+    // Reset form
     setCurrentSolution({
       title: "",
       description: "",
       categories: [],
-      url: profile.url || "",
+      url: "",
       image_url: "",
       productType: "service",
     });
+    setNewCategory("");
+    setIsDialogOpen(false);
 
     toast({
       title: "Solução adicionada!",
-      description:
-        "Solução adicionada à lista. Registre-a quando estiver pronto.",
+      description: `"${newSolution.title}" foi adicionada à lista.`,
     });
   };
 
@@ -259,169 +267,23 @@ export const SolutionCreator = ({ onNext, onPrev }: SolutionCreatorProps) => {
       </div>
 
       <div className="grid lg:grid-cols-2 gap-8">
-        {/* Solution Creation Form */}
+        {/* Solution Creation Button */}
         <div className="space-y-6">
           <Card className="card-premium p-6">
-            <CardHeader className="pb-4">
-              <CardTitle className="flex items-center gap-3 text-xl">
-                <Plus className="h-5 w-5" />
-                Nova Solução
-              </CardTitle>
-              <CardDescription>
-                Preencha os detalhes da sua solução
-              </CardDescription>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              {/* Title */}
-              <div className="space-y-2">
-                <Label htmlFor="title" className="text-sm font-medium">
-                  Título da Solução *
-                </Label>
-                <Input
-                  id="title"
-                  value={currentSolution.title || ""}
-                  onChange={(e) =>
-                    setCurrentSolution({
-                      ...currentSolution,
-                      title: e.target.value,
-                    })
-                  }
-                  placeholder="Ex: NextGen E-commerce Platform"
-                  className="h-11"
-                />
-              </div>
-
-              {/* Description */}
-              <div className="space-y-2">
-                <Label htmlFor="description" className="text-sm font-medium">
-                  Descrição *
-                </Label>
-                <Textarea
-                  id="description"
-                  value={currentSolution.description || ""}
-                  onChange={(e) =>
-                    setCurrentSolution({
-                      ...currentSolution,
-                      description: e.target.value,
-                    })
-                  }
-                  placeholder="Descreva sua solução, seus benefícios e como ela ajuda os usuários..."
-                  rows={3}
-                  className="resize-none"
-                />
-              </div>
-
-              {/* Categories */}
-              <div className="space-y-2">
-                <Label className="text-sm font-medium">Categorias</Label>
-                <div className="space-y-3">
-                  <div className="flex gap-2">
-                    <Input
-                      value={newCategory}
-                      onChange={(e) => setNewCategory(e.target.value)}
-                      placeholder="Ex: E-commerce, Retail"
-                      onKeyPress={(e) => e.key === "Enter" && addCategory()}
-                      className="h-10"
-                    />
-                    <Button onClick={addCategory} size="sm" className="h-10">
-                      +
-                    </Button>
-                  </div>
-                  <div className="flex flex-wrap gap-2">
-                    {currentSolution.categories?.map((category, index) => (
-                      <Badge
-                        key={index}
-                        variant="secondary"
-                        className="text-xs"
-                      >
-                        {category}
-                        <button
-                          onClick={() => removeCategory(index)}
-                          className="ml-1 text-xs hover:text-destructive"
-                        >
-                          ×
-                        </button>
-                      </Badge>
-                    ))}
-                  </div>
-                </div>
-              </div>
-
-              {/* URL */}
-              <div className="space-y-2">
-                <Label htmlFor="url" className="text-sm font-medium">
-                  URL da Solução
-                </Label>
-                <Input
-                  id="url"
-                  value={currentSolution.url || ""}
-                  onChange={(e) =>
-                    setCurrentSolution({
-                      ...currentSolution,
-                      url: e.target.value,
-                    })
-                  }
-                  placeholder="https://www.minhasolucao.com.br"
-                  className="h-11"
-                />
-              </div>
-
-              {/* Product Type */}
-              <div className="space-y-2">
-                <Label className="text-sm font-medium">Tipo de Produto *</Label>
-                <div className="grid grid-cols-3 gap-3">
-                  {[
-                    { value: "product", label: "Produto Físico" },
-                    { value: "service", label: "Serviço" },
-                    { value: "creator", label: "Produtor" },
-                  ].map((option) => (
-                    <Button
-                      key={option.value}
-                      variant={
-                        currentSolution.productType === option.value
-                          ? "default"
-                          : "outline"
-                      }
-                      onClick={() =>
-                        setCurrentSolution({
-                          ...currentSolution,
-                          productType: option.value as
-                            | "product"
-                            | "service"
-                            | "creator",
-                        })
-                      }
-                      className="h-12 text-xs px-1 whitespace-nowrap min-w-0"
-                      title={option.label}
-                    >
-                      {option.label}
-                    </Button>
-                  ))}
-                </div>
-              </div>
-
-              {/* Image URL */}
-              <div className="space-y-2">
-                <Label htmlFor="image_url" className="text-sm font-medium">
-                  URL da Imagem (opcional)
-                </Label>
-                <Input
-                  id="image_url"
-                  value={currentSolution.image_url || ""}
-                  onChange={(e) =>
-                    setCurrentSolution({
-                      ...currentSolution,
-                      image_url: e.target.value,
-                    })
-                  }
-                  placeholder="https://exemplo.com/imagem.jpg"
-                  className="h-11"
-                />
-              </div>
-
-              <Button onClick={addSolution} className="w-full h-11 mt-6">
+            <CardContent className="text-center py-12">
+              <Plus className="h-16 w-16 text-muted-foreground mx-auto mb-4" />
+              <h3 className="text-xl font-semibold text-foreground mb-2">
+                Criar Nova Solução
+              </h3>
+              <p className="text-muted-foreground mb-6">
+                Clique no botão abaixo para adicionar uma nova solução
+              </p>
+              <Button
+                onClick={() => setIsDialogOpen(true)}
+                className="gradient-primary"
+              >
                 <Plus className="mr-2 h-4 w-4" />
-                Adicionar à Lista
+                Criar Solução
               </Button>
             </CardContent>
           </Card>
@@ -453,7 +315,8 @@ export const SolutionCreator = ({ onNext, onPrev }: SolutionCreatorProps) => {
                     Nenhuma solução adicionada ainda
                   </p>
                   <p className="text-sm text-muted-foreground mt-2">
-                    Use o formulário ao lado para adicionar suas soluções
+                    Clique em "Criar Solução" para adicionar suas primeiras
+                    soluções
                   </p>
                 </div>
               ) : (
@@ -572,6 +435,182 @@ export const SolutionCreator = ({ onNext, onPrev }: SolutionCreatorProps) => {
               : `Finalizar (${solutions.length} soluç${solutions.length !== 1 ? "ões" : "ão"})`}
         </Button>
       </div>
+
+      {/* Dialog for Creating New Solution */}
+      <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+        <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto bg-card/95 backdrop-blur-sm border-border/50">
+          <DialogHeader className="pb-6 border-b border-border/30">
+            <DialogTitle className="text-2xl font-bold text-foreground flex items-center gap-3">
+              <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-primary to-primary-glow flex items-center justify-center">
+                <Plus className="h-4 w-4 text-primary-foreground" />
+              </div>
+              Nova Solução
+            </DialogTitle>
+            <DialogDescription className="text-muted-foreground text-base">
+              Preencha os detalhes da sua solução para adicioná-la ao sistema.
+            </DialogDescription>
+          </DialogHeader>
+
+          <div className="space-y-4">
+            {/* Title */}
+            <div className="space-y-2">
+              <Label htmlFor="title" className="text-sm font-medium">
+                Título da Solução *
+              </Label>
+              <Input
+                id="title"
+                value={currentSolution.title || ""}
+                onChange={(e) =>
+                  setCurrentSolution({
+                    ...currentSolution,
+                    title: e.target.value,
+                  })
+                }
+                placeholder="Ex: NextGen E-commerce Platform"
+                className="h-11 rounded-[1rem]"
+              />
+            </div>
+
+            {/* Description */}
+            <div className="space-y-2">
+              <Label htmlFor="description" className="text-sm font-medium">
+                Descrição *
+              </Label>
+              <Textarea
+                id="description"
+                value={currentSolution.description || ""}
+                onChange={(e) =>
+                  setCurrentSolution({
+                    ...currentSolution,
+                    description: e.target.value,
+                  })
+                }
+                placeholder="Descreva sua solução, seus benefícios e como ela ajuda os usuários..."
+                rows={3}
+                className="resize-none rounded-[1rem]"
+              />
+            </div>
+
+            {/* Categories */}
+            <div className="space-y-2">
+              <Label className="text-sm font-medium">Categorias</Label>
+              <div className="space-y-3">
+                <div className="flex gap-2">
+                  <Input
+                    value={newCategory}
+                    onChange={(e) => setNewCategory(e.target.value)}
+                    placeholder="Ex: E-commerce, Retail"
+                    onKeyPress={(e) => e.key === "Enter" && addCategory()}
+                    className="h-10 rounded-[1rem]"
+                  />
+                  <Button onClick={addCategory} size="sm" className="h-10">
+                    +
+                  </Button>
+                </div>
+                <div className="flex flex-wrap gap-2">
+                  {currentSolution.categories?.map((category, index) => (
+                    <Badge key={index} variant="secondary" className="text-xs">
+                      {category}
+                      <button
+                        onClick={() => removeCategory(index)}
+                        className="ml-1 text-xs hover:text-destructive"
+                      >
+                        ×
+                      </button>
+                    </Badge>
+                  ))}
+                </div>
+              </div>
+            </div>
+
+            {/* URL */}
+            <div className="space-y-2">
+              <Label htmlFor="url" className="text-sm font-medium">
+                URL da Solução
+              </Label>
+              <Input
+                id="url"
+                value={currentSolution.url || ""}
+                onChange={(e) =>
+                  setCurrentSolution({
+                    ...currentSolution,
+                    url: e.target.value,
+                  })
+                }
+                placeholder="https://www.minhasolucao.com.br"
+                className="h-11 rounded-[1rem]"
+              />
+            </div>
+
+            {/* Product Type */}
+            <div className="space-y-2">
+              <Label className="text-sm font-medium">Tipo de Produto *</Label>
+              <div className="grid grid-cols-3 gap-3">
+                {[
+                  { value: "product", label: "Produto Físico" },
+                  { value: "service", label: "Serviço" },
+                  { value: "creator", label: "Produtor" },
+                ].map((option) => (
+                  <Button
+                    key={option.value}
+                    variant={
+                      currentSolution.productType === option.value
+                        ? "default"
+                        : "outline"
+                    }
+                    onClick={() =>
+                      setCurrentSolution({
+                        ...currentSolution,
+                        productType: option.value as
+                          | "product"
+                          | "service"
+                          | "creator",
+                      })
+                    }
+                    className="h-12 text-xs px-1 whitespace-nowrap min-w-0 rounded-[1rem]"
+                    title={option.label}
+                  >
+                    {option.label}
+                  </Button>
+                ))}
+              </div>
+            </div>
+
+            {/* Image URL */}
+            <div className="space-y-2">
+              <Label htmlFor="image_url" className="text-sm font-medium">
+                URL da Imagem (opcional)
+              </Label>
+              <Input
+                id="image_url"
+                value={currentSolution.image_url || ""}
+                onChange={(e) =>
+                  setCurrentSolution({
+                    ...currentSolution,
+                    image_url: e.target.value,
+                  })
+                }
+                placeholder="https://exemplo.com/imagem.jpg"
+                className="h-11 rounded-[1rem]"
+              />
+            </div>
+
+            <div className="flex gap-3 pt-4">
+              <Button
+                variant="outline"
+                onClick={() => setIsDialogOpen(false)}
+                className="flex-1 rounded-[1rem]"
+              >
+                Cancelar
+              </Button>
+              <Button onClick={addSolution} className="flex-1 rounded-[1rem]">
+                <Plus className="mr-2 h-4 w-4" />
+                Adicionar à Lista
+              </Button>
+            </div>
+          </div>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 };
