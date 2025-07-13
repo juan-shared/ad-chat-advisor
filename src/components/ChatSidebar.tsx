@@ -122,7 +122,7 @@ export const ChatSidebar = ({ onClose }: ChatSidebarProps) => {
       <div className="p-4 border-b">
         <div className="flex items-center justify-between mb-4">
           <div className="flex items-center gap-2">
-            <h2 className="text-lg font-semibold">Adapta Chat</h2>
+            <h2 className="text-lg font-semibold">Conversity.AI</h2>
             {hasNoConversations && (
               <Badge variant="secondary" className="text-xs">
                 Novo
@@ -227,9 +227,6 @@ export const ChatSidebar = ({ onClose }: ChatSidebarProps) => {
                 <>
                   <div className="relative mb-4">
                     <MessageSquare className="h-16 w-16 text-muted-foreground mx-auto mb-3 opacity-30" />
-                    <div className="absolute -top-1 -right-1 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full p-1">
-                      <Plus className="h-4 w-4 text-white" />
-                    </div>
                   </div>
                   <h3 className="text-sm font-medium text-foreground mb-2">
                     Comece sua primeira conversa

@@ -44,17 +44,19 @@ const Chat = () => {
 
   return (
     <div className="h-screen flex bg-background overflow-hidden pt-16">
-      {/* Mobile sidebar toggle */}
-      <div className="lg:hidden fixed top-4 left-4 z-50">
-        <Button
-          variant="outline"
-          size="icon"
-          onClick={() => setSidebarOpen(!sidebarOpen)}
-          className="bg-background/80 backdrop-blur-sm shadow-lg rounded-xl"
-        >
-          <Menu className="h-4 w-4" />
-        </Button>
-      </div>
+      {/* Mobile sidebar toggle - only show when sidebar is closed */}
+      {!sidebarOpen && (
+        <div className="lg:hidden fixed top-20 left-4 z-50">
+          <Button
+            variant="outline"
+            size="icon"
+            onClick={() => setSidebarOpen(!sidebarOpen)}
+            className="bg-background/80 backdrop-blur-sm shadow-lg rounded-xl"
+          >
+            <Menu className="h-4 w-4" />
+          </Button>
+        </div>
+      )}
 
       {/* Sidebar */}
       <div

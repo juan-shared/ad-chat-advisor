@@ -153,7 +153,7 @@ export const ChatWindow = () => {
           <Bot className="h-16 w-16 text-muted-foreground mx-auto" />
           <div>
             <h3 className="text-xl font-semibold text-foreground">
-              Bem-vindo ao Adapta Chat
+              Bem-vindo ao Conversity.AI
             </h3>
             <p className="text-muted-foreground">
               Inicie uma nova conversa para começar

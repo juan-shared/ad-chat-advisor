@@ -6,7 +6,7 @@ import { ThemeToggle } from "./ThemeToggle";
 const Navbar = () => {
   return (
     <nav className="fixed top-0 left-0 right-0 z-50 bg-background/80 backdrop-blur-md border-b border-border/50">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="mx-auto px-4 md:px-6">
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
           <Link
@@ -24,17 +24,6 @@ const Navbar = () => {
           {/* Navigation Links */}
           <div className="flex items-center space-x-3">
             <ThemeToggle />
-            
-            <Button
-              asChild
-              variant="ghost"
-              className="text-muted-foreground hover:text-foreground hover:bg-muted/50 transition-all duration-200"
-            >
-              <Link to="/chat" className="flex items-center space-x-2">
-                <MessageSquare className="h-4 w-4" />
-                <span>Chatbot</span>
-              </Link>
-            </Button>
 
             <Button
               asChild
