@@ -62,7 +62,7 @@ export const SiteMapper = ({ onNext }: SiteMapperProps) => {
         const errorText = await response.text();
         console.log("Error response text:", errorText);
         throw new Error(
-          `Failed to send API request: ${response.status} - ${errorText}`,
+          `Failed to send API request: ${response.status} - ${errorText}`
         );
       }
 
@@ -78,10 +78,10 @@ export const SiteMapper = ({ onNext }: SiteMapperProps) => {
         console.error("JSON parsing error:", parseError);
         console.log(
           "Failed to parse response as JSON, raw text:",
-          responseText,
+          responseText
         );
         throw new Error(
-          `Failed to parse response as JSON: ${parseError.message}`,
+          `Failed to parse response as JSON: ${parseError.message}`
         );
       }
 
@@ -105,7 +105,7 @@ export const SiteMapper = ({ onNext }: SiteMapperProps) => {
       console.log(error);
 
       setError(
-        "Erro ao analisar a solução. Verifique a URL e tente novamente.",
+        "Erro ao analisar a solução. Verifique a URL e tente novamente."
       );
       toast({
         title: "Erro na análise",
@@ -149,7 +149,7 @@ export const SiteMapper = ({ onNext }: SiteMapperProps) => {
       if (!response.ok) {
         const errorText = await response.text();
         throw new Error(
-          `Failed to create solution: ${response.status} - ${errorText}`,
+          `Failed to create solution: ${response.status} - ${errorText}`
         );
       }
 
@@ -320,8 +320,8 @@ export const SiteMapper = ({ onNext }: SiteMapperProps) => {
         </Card>
 
         <Card className="card-elegant p-6 text-center hover:scale-105 transition-transform">
-          <div className="w-16 h-16 rounded-3xl bg-gradient-to-br from-secondary/10 to-secondary/20 flex items-center justify-center mx-auto mb-4">
-            <Shield className="h-8 w-8 text-secondary" />
+          <div className="w-16 h-16 rounded-3xl bg-gradient-to-br from-primary/10 to-primary/20 flex items-center justify-center mx-auto mb-4">
+            <Shield className="h-8 w-8 text-primary" />
           </div>
           <h4 className="text-lg font-semibold text-foreground mb-2">
             Totalmente Seguro
