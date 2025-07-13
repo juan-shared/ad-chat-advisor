@@ -1,6 +1,11 @@
 # Welcome to Conversity.ai
 
-![Conversity Logo](https://conversity.ai/assets/logo.png)
+<p align="center">
+  <img src="assets/logo.jpeg">
+  <p align="center">
+      The world has changed. Attention is shifting away from Google and social media towards AI interactions for thinking, deciding, searching, and BUYING. We're redefining advertising by connecting solutions to people at the ideal moment during their AI interactions.
+  </p>
+</p>
 
 ## How can I edit this code?
 
