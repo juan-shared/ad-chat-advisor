@@ -1,28 +1,42 @@
-import { useState } from 'react';
-import { useVendorStore } from '@/stores/vendorStore';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { Badge } from '@/components/ui/badge';
-import { Loader2, Globe, CheckCircle, Sparkles, Shield, Zap } from 'lucide-react';
-import { useToast } from '@/hooks/use-toast';
+import { useState } from "react";
+import { useVendorStore } from "@/stores/vendorStore";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Badge } from "@/components/ui/badge";
+import {
+  Loader2,
+  Globe,
+  CheckCircle,
+  Sparkles,
+  Shield,
+  Zap,
+} from "lucide-react";
+import { useToast } from "@/hooks/use-toast";
 
 interface SiteMapperProps {
   onNext: () => void;
 }
 
 export const SiteMapper = ({ onNext }: SiteMapperProps) => {
-  const { profile, setUrl, setSiteData, setLoading, setError, isLoading } = useVendorStore();
+  const { profile, setUrl, setSiteData, setLoading, setError, isLoading } =
+    useVendorStore();
   const [inputUrl, setInputUrl] = useState(profile.url);
   const { toast } = useToast();
 
   const handleMapSite = async () => {
     if (!inputUrl.trim()) {
       toast({
-        title: 'URL obrigatória',
-        description: 'Digite a URL do seu site para continuar.',
-        variant: 'destructive',
+        title: "URL obrigatória",
+        description: "Digite a URL do seu site para continuar.",
+        variant: "destructive",
       });
       return;
     }
@@ -31,34 +45,138 @@ export const SiteMapper = ({ onNext }: SiteMapperProps) => {
     setError(null);
 
     try {
-      // Mock API call - replace with actual endpoint
-      await new Promise(resolve => setTimeout(resolve, 2000));
-      
-      // Mock response data
-      const mockSiteData = {
-        title: 'Minha Empresa Incrível',
-        description: 'Somos uma empresa inovadora que oferece soluções digitais para transformar seu negócio.',
-        images: [
-          'https://images.unsplash.com/photo-1560472354-b33ff0c44a43?w=400',
-          'https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=400',
-        ],
+      // Send POST request to API with websiteUrl in request body
+      const apiUrl = "http://localhost:3000/api/solution-owners/crawl";
+
+      const response = await fetch(apiUrl, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          url: inputUrl,
+        }),
+      });
+
+      if (!response.ok) {
+        const errorText = await response.text();
+        console.log("Error response text:", errorText);
+        throw new Error(
+          `Failed to send API request: ${response.status} - ${errorText}`,
+        );
+      }
+
+      // Get the response as text first to debug
+      const responseText = await response.text();
+
+      // Try to parse as JSON
+      let responseData;
+      try {
+        responseData = JSON.parse(responseText);
+        console.log("Parsed response data:", responseData);
+      } catch (parseError) {
+        console.error("JSON parsing error:", parseError);
+        console.log(
+          "Failed to parse response as JSON, raw text:",
+          responseText,
+        );
+        throw new Error(
+          `Failed to parse response as JSON: ${parseError.message}`,
+        );
+      }
+
+      // Use the data from the API response
+      const siteData = {
+        title: responseData.title || "Site Analisado",
+        description: responseData.summary || "Análise do site concluída.",
+        primaryColor: responseData.primaryColor || null,
+        secondaryColor: responseData.secondaryColor || null,
+        images: [],
       };
 
       setUrl(inputUrl);
-      setSiteData(mockSiteData);
-      
+      setSiteData(siteData);
+
       toast({
-        title: 'Site mapeado com sucesso!',
-        description: 'Informações extraídas e processadas.',
+        title: "Solução analisada com sucesso!",
+        description: "Informações da solução extraídas e processadas.",
+      });
+    } catch (error) {
+      console.log(error);
+
+      setError(
+        "Erro ao analisar a solução. Verifique a URL e tente novamente.",
+      );
+      toast({
+        title: "Erro na análise",
+        description: "Não foi possível analisar a solução. Verifique a URL.",
+        variant: "destructive",
+      });
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleContinue = async () => {
+    if (!profile.siteData) {
+      toast({
+        title: "Erro",
+        description:
+          "Dados da solução não encontrados. Analise o site primeiro.",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    setLoading(true);
+
+    try {
+      const createSolutionUrl = "http://localhost:3000/api/solution-owners";
+
+      const response = await fetch(createSolutionUrl, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          company_title: profile.siteData.title,
+          url: profile.url,
+          company_description: profile.siteData.description,
+          metadata: {},
+        }),
+      });
+
+      if (!response.ok) {
+        const errorText = await response.text();
+        throw new Error(
+          `Failed to create solution: ${response.status} - ${errorText}`,
+        );
+      }
+
+      const responseData = await response.json();
+      console.log("Create solution response:", responseData);
+
+      // Store the solution owner ID from the response
+      if (responseData.id) {
+        const updatedSiteData = {
+          ...profile.siteData,
+          solutionOwnerId: responseData.id,
+        };
+        setSiteData(updatedSiteData);
+      }
+
+      toast({
+        title: "Solução criada com sucesso!",
+        description: "Sua solução foi registrada em nosso sistema.",
       });
 
       onNext();
     } catch (error) {
-      setError('Erro ao mapear o site. Verifique a URL e tente novamente.');
+      console.log(error);
       toast({
-        title: 'Erro no mapeamento',
-        description: 'Não foi possível acessar o site. Verifique a URL.',
-        variant: 'destructive',
+        title: "Erro ao criar solução",
+        description: "Não foi possível registrar sua solução. Tente novamente.",
+        variant: "destructive",
       });
     } finally {
       setLoading(false);
@@ -74,11 +192,12 @@ export const SiteMapper = ({ onNext }: SiteMapperProps) => {
         </div>
         <div>
           <h3 className="text-3xl font-bold text-foreground mb-4">
-            Conecte seu Site
+            Registre sua Solução
           </h3>
           <p className="text-xl text-muted-foreground leading-relaxed max-w-2xl mx-auto">
-            Nossa IA analisará seu site e extrairá automaticamente informações sobre seus produtos, 
-            serviços e público-alvo para criar um perfil personalizado.
+            Nossa IA analisará seu site e extrairá automaticamente informações
+            sobre sua solução para registrá-la em nosso sistema e conectá-la aos
+            usuários certos.
           </p>
         </div>
       </div>
@@ -92,18 +211,20 @@ export const SiteMapper = ({ onNext }: SiteMapperProps) => {
               <Badge className="bg-gradient-to-r from-primary to-secondary text-primary-foreground px-4 py-2 rounded-xl">
                 Passo 1
               </Badge>
-              <h4 className="text-xl font-semibold text-foreground">URL do seu Site</h4>
+              <h4 className="text-xl font-semibold text-foreground">
+                URL da sua Solução
+              </h4>
             </div>
-            
+
             <div className="space-y-4">
               <Label htmlFor="website-url" className="text-base font-medium">
-                Digite a URL completa do seu website
+                Digite a URL completa da sua solução
               </Label>
               <div className="relative">
                 <Input
                   id="website-url"
                   type="url"
-                  placeholder="https://www.meusite.com.br"
+                  placeholder="https://www.minhasolucao.com.br"
                   value={inputUrl}
                   onChange={(e) => setInputUrl(e.target.value)}
                   disabled={isLoading}
@@ -113,7 +234,8 @@ export const SiteMapper = ({ onNext }: SiteMapperProps) => {
               </div>
               <p className="text-sm text-muted-foreground flex items-center gap-2">
                 <Shield className="h-4 w-4" />
-                Seus dados estão seguros e serão usados apenas para gerar seu perfil.
+                Seus dados estão seguros e serão usados apenas para registrar
+                sua solução.
               </p>
             </div>
           </div>
@@ -135,18 +257,6 @@ export const SiteMapper = ({ onNext }: SiteMapperProps) => {
                         {profile.siteData.description}
                       </p>
                     </div>
-                    {profile.siteData.images.length > 0 && (
-                      <div className="flex space-x-3">
-                        {profile.siteData.images.slice(0, 4).map((img, index) => (
-                          <img
-                            key={index}
-                            src={img}
-                            alt={`Site preview ${index + 1}`}
-                            className="h-20 w-20 object-cover rounded-2xl border-2 border-green-200 dark:border-green-700 shadow-sm"
-                          />
-                        ))}
-                      </div>
-                    )}
                   </div>
                 </div>
               </CardContent>
@@ -168,18 +278,26 @@ export const SiteMapper = ({ onNext }: SiteMapperProps) => {
               ) : (
                 <>
                   <Sparkles className="mr-3 h-6 w-6" />
-                  Mapear Site com IA
+                  Analisar Solução com IA
                 </>
               )}
             </Button>
-            
+
             {profile.siteData && (
-              <Button 
-                variant="outline" 
-                onClick={onNext}
+              <Button
+                variant="outline"
+                onClick={handleContinue}
+                disabled={isLoading}
                 className="h-16 px-8 rounded-2xl border-2"
               >
-                Continuar
+                {isLoading ? (
+                  <>
+                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                    Criando...
+                  </>
+                ) : (
+                  "Continuar"
+                )}
               </Button>
             )}
           </div>
@@ -192,9 +310,12 @@ export const SiteMapper = ({ onNext }: SiteMapperProps) => {
           <div className="w-16 h-16 rounded-3xl bg-gradient-to-br from-primary/10 to-primary/20 flex items-center justify-center mx-auto mb-4">
             <Sparkles className="h-8 w-8 text-primary" />
           </div>
-          <h4 className="text-lg font-semibold text-foreground mb-2">Análise Inteligente</h4>
+          <h4 className="text-lg font-semibold text-foreground mb-2">
+            Análise Inteligente
+          </h4>
           <p className="text-muted-foreground leading-relaxed">
-            Nossa IA extrai automaticamente informações relevantes do seu site para criar um perfil completo.
+            Nossa IA extrai automaticamente informações relevantes da sua
+            solução para registrá-la em nosso sistema.
           </p>
         </Card>
 
@@ -202,9 +323,12 @@ export const SiteMapper = ({ onNext }: SiteMapperProps) => {
           <div className="w-16 h-16 rounded-3xl bg-gradient-to-br from-secondary/10 to-secondary/20 flex items-center justify-center mx-auto mb-4">
             <Shield className="h-8 w-8 text-secondary" />
           </div>
-          <h4 className="text-lg font-semibold text-foreground mb-2">Totalmente Seguro</h4>
+          <h4 className="text-lg font-semibold text-foreground mb-2">
+            Totalmente Seguro
+          </h4>
           <p className="text-muted-foreground leading-relaxed">
-            Todos os dados são criptografados e protegidos. Sua privacidade é nossa prioridade.
+            Todos os dados são criptografados e protegidos. Sua privacidade é
+            nossa prioridade.
           </p>
         </Card>
 
@@ -212,9 +336,12 @@ export const SiteMapper = ({ onNext }: SiteMapperProps) => {
           <div className="w-16 h-16 rounded-3xl bg-gradient-to-br from-primary/10 to-secondary/10 flex items-center justify-center mx-auto mb-4">
             <Zap className="h-8 w-8 text-primary" />
           </div>
-          <h4 className="text-lg font-semibold text-foreground mb-2">Super Rápido</h4>
+          <h4 className="text-lg font-semibold text-foreground mb-2">
+            Super Rápido
+          </h4>
           <p className="text-muted-foreground leading-relaxed">
-            Processo otimizado que leva apenas alguns segundos para ser concluído.
+            Processo otimizado que leva apenas alguns segundos para ser
+            concluído.
           </p>
         </Card>
       </div>

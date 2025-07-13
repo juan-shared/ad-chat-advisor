@@ -14,46 +14,34 @@ import { Badge } from "@/components/ui/badge";
 import { FileUpload } from "@/components/FileUpload";
 import { SiteMapper } from "@/components/SiteMapper";
 import { ProfileSummary } from "@/components/ProfileSummary";
-import { VendorTypeSelector } from "@/components/VendorTypeSelector";
-import { AdPreview } from "@/components/AdPreview";
-import { AdCreator } from "@/components/AdCreator";
-import { Globe, Upload, Settings, CheckCircle, User } from "lucide-react";
+
+import { SolutionPreview } from "@/components/SolutionPreview";
+import { SolutionCreator } from "@/components/SolutionCreator";
+import { Globe, Upload, Settings, CheckCircle } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 
 const steps = [
   {
     id: 0,
-    title: "Tipo de Anunciante",
-    icon: User,
-    description: "Escolha sua categoria",
-  },
-  {
-    id: 1,
     title: "Site & Dados",
     icon: Globe,
     description: "Conecte seu site",
   },
   {
-    id: 2,
-    title: "Contexto da IA",
-    icon: Upload,
-    description: "Materiais para IA entender sua solução",
-  },
-  {
-    id: 3,
-    title: "Anúncios",
+    id: 1,
+    title: "Soluções",
     icon: Settings,
-    description: "Crie seus anúncios",
+    description: "Registre sua solução",
   },
   {
-    id: 4,
+    id: 2,
     title: "Concluído",
     icon: CheckCircle,
     description: "Perfil criado com sucesso",
   },
 ];
 
-const Ads = () => {
+const Solutions = () => {
   const { currentStep, setCurrentStep, profile, isLoading, error } =
     useVendorStore();
   const { toast } = useToast();
@@ -85,32 +73,31 @@ const Ads = () => {
   const renderStepContent = () => {
     switch (currentStep) {
       case 0:
-        return <VendorTypeSelector onNext={handleNextStep} />;
-      case 1:
         return <SiteMapper onNext={handleNextStep} />;
-      case 2:
-        return <FileUpload onNext={handleNextStep} onPrev={handlePrevStep} />;
-      case 3:
+      case 1:
         return (
-          <AdCreator onNext={handleNextStep} onPrev={handlePrevStep} />
+          <SolutionCreator onNext={handleNextStep} onPrev={handlePrevStep} />
         );
-      case 4:
+      case 2:
         return (
           <div className="text-center space-y-6 animate-fade-in">
             <CheckCircle className="h-16 w-16 text-primary mx-auto" />
             <div>
               <h3 className="text-2xl font-bold text-foreground">
-                Perfil Criado com Sucesso!
+                Solução Registrada com Sucesso!
               </h3>
               <p className="text-muted-foreground mt-2">
-                Seu perfil de anunciante foi configurado e está pronto para uso.
+                Sua solução foi registrada em nosso sistema e está pronta para
+                ser oferecida aos usuários.
               </p>
             </div>
             <div className="flex gap-4 justify-center">
-              <Button variant="outline" onClick={() => setCurrentStep(0)}>
-                Criar Novo Perfil
+              <Button
+                className="gradient-primary"
+                onClick={() => setCurrentStep(0)}
+              >
+                Registrar Nova Solução
               </Button>
-              <Button className="gradient-primary">Ir para Dashboard</Button>
             </div>
           </div>
         );
@@ -127,14 +114,14 @@ const Ads = () => {
         <div className="relative max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pt-20 pb-12">
           <div className="text-center space-y-6">
             <h1 className="text-4xl md:text-5xl font-bold text-foreground">
-              Configure seu{" "}
+              Registre sua{" "}
               <span className="bg-gradient-to-r from-primary to-primary/80 bg-clip-text text-transparent">
-                Perfil Inteligente
+                Solução Inteligente
               </span>
             </h1>
             <p className="text-xl mb-8 text-muted-foreground mb-8 max-w-4xl mx-auto leading-relaxed">
-              Crie um perfil que conecta sua solução aos usuários certos no
-              momento perfeito através de IA
+              Registre sua solução em nosso sistema para que possamos conectá-la
+              aos usuários certos no momento perfeito através de IA
             </p>
           </div>
         </div>
@@ -205,8 +192,8 @@ const Ads = () => {
                           isActive
                             ? "bg-gradient-to-br from-primary to-primary-glow text-primary-foreground shadow-lg scale-110"
                             : isCompleted
-                            ? "bg-primary text-primary-foreground shadow-md hover:shadow-lg hover:scale-105"
-                            : "bg-muted/50 text-muted-foreground border border-border"
+                              ? "bg-primary text-primary-foreground shadow-md hover:shadow-lg hover:scale-105"
+                              : "bg-muted/50 text-muted-foreground border border-border"
                         }`}
                       >
                         {isCompleted ? (
@@ -260,9 +247,9 @@ const Ads = () => {
               </div>
 
               {/* Preview Sidebar */}
-              {currentStep > 0 && (
+              {currentStep >= 0 && (
                 <div className="lg:col-span-1 space-y-6">
-                  <AdPreview />
+                  <SolutionPreview />
                 </div>
               )}
             </div>
@@ -273,4 +260,4 @@ const Ads = () => {
   );
 };
 
-export default Ads;
+export default Solutions;
