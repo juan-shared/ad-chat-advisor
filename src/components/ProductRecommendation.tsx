@@ -30,7 +30,9 @@ interface ProductRecommendation {
   companyName?: string;
   price?: string;
   rating?: number;
-  type: 'product' | 'service' | 'creator';
+  metadata: {
+    productType: 'product' | 'service' | 'creator';
+  };
 }
 
 interface ProductRecommendationProps {
@@ -128,7 +130,7 @@ export const ProductRecommendation: React.FC<ProductRecommendationProps> = ({
 
                 <CardContent className="p-0 h-full rounded-md overflow-hidden">
                   {/* Different layouts based on type */}
-                  {product.type === 'service' ? (
+                  {product.metadata.productType === 'service' ? (
                     // SERVICE TYPE: Logo centered on gradient background
                     <div 
                       className="relative h-20 group-hover:h-24 bg-gradient-to-br flex flex-col items-center justify-center overflow-hidden transition-all duration-500 ease-out rounded-t-md"
@@ -141,14 +143,25 @@ export const ProductRecommendation: React.FC<ProductRecommendationProps> = ({
                         <div 
                           className="w-8 h-8 group-hover:w-12 group-hover:h-12 rounded-full bg-white/90 shadow-lg flex items-center justify-center border transition-all duration-300"
                         >
-                          <img
-                            src={product.logo}
-                            alt={product.companyName}
-                            className="w-5 h-5 group-hover:w-7 group-hover:h-7 object-contain transition-all duration-300"
-                            onError={(e) => {
-                              e.currentTarget.src = '/placeholder.svg';
-                            }}
-                          />
+                          {product.logo ? (
+                            <img
+                              src={product.logo}
+                              alt={product.companyName}
+                              className="w-5 h-5 group-hover:w-7 group-hover:h-7 object-contain transition-all duration-300"
+                              onError={(e) => {
+                                // Fallback to service icon for services
+                                const parent = e.currentTarget.parentElement;
+                                if (parent) {
+                                  parent.innerHTML = `<svg class="w-5 h-5 group-hover:w-7 group-hover:h-7 text-muted-foreground transition-all duration-300" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>`;
+                                }
+                              }}
+                            />
+                          ) : (
+                            // Service icon fallback when no logo
+                            <svg className="w-5 h-5 group-hover:w-7 group-hover:h-7 text-muted-foreground transition-all duration-300" fill="currentColor" viewBox="0 0 24 24">
+                              <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                            </svg>
+                          )}
                         </div>
                         {product.companyName && (
                           <span className="text-white text-xs group-hover:text-sm font-semibold text-center shadow-sm transition-all duration-300">
@@ -157,7 +170,7 @@ export const ProductRecommendation: React.FC<ProductRecommendationProps> = ({
                         )}
                       </div>
                     </div>
-                  ) : product.type === 'creator' ? (
+                  ) : product.metadata.productType === 'creator' ? (
                     // CREATOR TYPE: Profile image/logo or user icon fallback
                     <div 
                       className="relative h-20 group-hover:h-24 bg-gradient-to-br flex flex-col items-center justify-center overflow-hidden transition-all duration-500 ease-out rounded-t-md"
@@ -201,6 +214,7 @@ export const ProductRecommendation: React.FC<ProductRecommendationProps> = ({
                       </div>
                     </div>
                   ) : (
+
                     // PRODUCT TYPE: Original product image layout
                     <div 
                       className="relative h-20 group-hover:h-24 bg-gradient-to-br overflow-hidden transition-all duration-500 ease-out rounded-t-md"
@@ -217,22 +231,24 @@ export const ProductRecommendation: React.FC<ProductRecommendationProps> = ({
                         }}
                       />
                       
-                      {/* Company Logo - Bottom Right Corner */}
-                      <div className="absolute bottom-1 right-1">
-                        <div 
-                          className="w-6 h-6 group-hover:w-8 group-hover:h-8 rounded-full bg-white shadow-md flex items-center justify-center border transition-all duration-300"
-                          style={{ borderColor: product.primaryColor + '40' }}
-                        >
-                          <img
-                            src={product.logo}
-                            alt={product.companyName}
-                            className="w-3 h-3 group-hover:w-4 group-hover:h-4 object-contain transition-all duration-300"
-                            onError={(e) => {
-                              e.currentTarget.src = '/placeholder.svg';
-                            }}
-                          />
+                      {/* Company Logo - Bottom Right Corner - Only show if logo exists */}
+                      {product.logo && (
+                        <div className="absolute bottom-1 right-1">
+                          <div 
+                            className="w-6 h-6 group-hover:w-8 group-hover:h-8 rounded-full bg-white shadow-md flex items-center justify-center border transition-all duration-300"
+                            style={{ borderColor: product.primaryColor + '40' }}
+                          >
+                            <img
+                              src={product.logo}
+                              alt={product.companyName}
+                              className="w-3 h-3 group-hover:w-4 group-hover:h-4 object-contain transition-all duration-300"
+                              onError={(e) => {
+                                e.currentTarget.src = '/placeholder.svg';
+                              }}
+                            />
+                          </div>
                         </div>
-                      </div>
+                      )}
                     </div>
                   )}
 
@@ -261,7 +277,7 @@ export const ProductRecommendation: React.FC<ProductRecommendationProps> = ({
                     <div className="opacity-0 group-hover:opacity-100 max-h-0 group-hover:max-h-96 overflow-hidden transition-all duration-500 ease-out space-y-2 mt-2">
                       {/* Company Name & Rating - Only show company name for product type since service/creator already show it above */}
                       <div className="space-y-1">
-                        {product.type === 'product' && product.companyName && (
+                        {product.metadata.productType === 'product' && product.companyName && (
                           <div className="flex items-center gap-1 text-xs text-muted-foreground">
                             <span>{product.companyName}</span>
                           </div>
@@ -324,8 +340,8 @@ export const ProductRecommendation: React.FC<ProductRecommendationProps> = ({
                         }}
                       >
                         <ExternalLink className="h-2.5 w-2.5 mr-1" />
-                        {product.type === 'service' ? 'Ver Serviço' : 
-                         product.type === 'creator' ? 'Ver Perfil' : 
+                        {product.metadata.productType === 'service' ? 'Ver Serviço' : 
+                         product.metadata.productType === 'creator' ? 'Ver Perfil' : 
                          'Ver Produto'}
                       </Button>
                     </div>

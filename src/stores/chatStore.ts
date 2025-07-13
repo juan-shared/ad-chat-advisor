@@ -17,7 +17,7 @@ export interface Recommendation {
   cta: string;
   relevanceScore?: number;
   // New product recommendation fields
-  image?: string;
+  image_url?: string;
   url?: string;
   primaryColor?: string;
   secondaryColor?: string;
@@ -26,7 +26,9 @@ export interface Recommendation {
   companyName?: string;
   price?: string;
   rating?: number;
-  type?: 'product' | 'service' | 'creator';
+  metadata?: {
+    productType?: 'product' | 'service' | 'creator';
+  };
 }
 
 export interface ChatSession {

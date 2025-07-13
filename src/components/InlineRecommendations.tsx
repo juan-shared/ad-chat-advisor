@@ -71,7 +71,7 @@ Esta recomendação foi gerada usando IA que analisa seu perfil, histórico de c
             recommendations={recommendations.filter(rec => 
               rec.url
             ).map(rec => ({
-              image_url: rec.image || '',
+              image_url: rec.image_url || '',
               url: rec.url!,
               primaryColor: rec.primaryColor! || '#297f71',
               secondaryColor: rec.secondaryColor! || '#f3f4f6',
@@ -81,7 +81,9 @@ Esta recomendação foi gerada usando IA que analisa seu perfil, histórico de c
               companyName: rec.companyName,
               price: rec.price,
               rating: rec.rating,
-              type: rec.type || 'product'
+              metadata: {
+                productType: rec.metadata?.productType || 'product'
+              }
             }))} 
           />
         </div>
