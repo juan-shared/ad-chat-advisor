@@ -129,9 +129,9 @@ export const ProductRecommendation: React.FC<ProductRecommendationProps> = ({
                 )}
 
                 <CardContent className="p-0 h-full rounded-md overflow-hidden">
-                  {/* Different layouts based on type */}
-                  {product.metadata.productType === 'service' ? (
-                    // SERVICE TYPE: Logo centered on gradient background
+                  {/* Different layouts based on type and image availability */}
+                  {product.metadata.productType === 'service' && !product.image_url ? (
+                    // SERVICE TYPE WITHOUT IMAGE: Logo centered on gradient background
                     <div 
                       className="relative h-20 group-hover:h-24 bg-gradient-to-br flex flex-col items-center justify-center overflow-hidden transition-all duration-500 ease-out rounded-t-md"
                       style={{ 
@@ -215,7 +215,7 @@ export const ProductRecommendation: React.FC<ProductRecommendationProps> = ({
                     </div>
                   ) : (
 
-                    // PRODUCT TYPE: Original product image layout
+                    // PRODUCT TYPE OR SERVICE WITH IMAGE: Product image layout
                     <div 
                       className="relative h-20 group-hover:h-24 bg-gradient-to-br overflow-hidden transition-all duration-500 ease-out rounded-t-md"
                       style={{ 
@@ -224,7 +224,7 @@ export const ProductRecommendation: React.FC<ProductRecommendationProps> = ({
                     >
                       <img
                         src={product.image_url}
-                        alt={product.title || 'Product'}
+                        alt={product.title || (product.metadata.productType === 'service' ? 'Service' : 'Product')}
                         className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
                         onError={(e) => {
                           e.currentTarget.src = '/placeholder.svg';
@@ -275,9 +275,9 @@ export const ProductRecommendation: React.FC<ProductRecommendationProps> = ({
 
                     {/* Expandable content - Only on hover */}
                     <div className="opacity-0 group-hover:opacity-100 max-h-0 group-hover:max-h-96 overflow-hidden transition-all duration-500 ease-out space-y-2 mt-2">
-                      {/* Company Name & Rating - Only show company name for product type since service/creator already show it above */}
+                      {/* Company Name & Rating - Only show company name for product type or services with images since service/creator without images already show it above */}
                       <div className="space-y-1">
-                        {product.metadata.productType === 'product' && product.companyName && (
+                        {(product.metadata.productType === 'product' || (product.metadata.productType === 'service' && product.image_url)) && product.companyName && (
                           <div className="flex items-center gap-1 text-xs text-muted-foreground">
                             <span>{product.companyName}</span>
                           </div>
