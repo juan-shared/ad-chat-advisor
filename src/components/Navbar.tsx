@@ -1,6 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 import { MessageSquare, Megaphone, Sparkles } from "lucide-react";
+import { ThemeToggle } from "./ThemeToggle";
 
 const Navbar = () => {
   return (
@@ -22,6 +23,8 @@ const Navbar = () => {
 
           {/* Navigation Links */}
           <div className="flex items-center space-x-3">
+            <ThemeToggle />
+            
             <Button
               asChild
               variant="ghost"
